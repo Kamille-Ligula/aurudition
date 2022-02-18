@@ -1,0 +1,85 @@
+body {
+  background: #ddd;
+  color: black;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	/*min-height: 100%;*/
+	/*overflow: hidden;*/
+}
+
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.no-dbl-tap-zoom {
+  touch-action: manipulation;
+}
+
+.getNoteButtons {
+  z-index: 999;
+  elevation: 999;
+  position: fixed;
+  text-align: center;
+  width: 100%;
+  height: auto;
+  top: 6vh;
+}
+
+
+.button {
+  border-radius: 8px;
+  padding: 10px 24px;
+  background-color: #4CAF50;
+  color: black;
+  border: none;
+}
+.button:hover {
+  background-color: #1C9F20;
+  color: white;
+}
+.button:active {
+  background-color: #4CAF50;
+}
+
+.redbutton {
+  border-radius: 8px;
+  padding: 10px 24px;
+  background-color: #FF5757;
+  color: black;
+  border: none;
+}
+.redbutton:hover {
+  background-color: #FF3C3C;
+  color: white;
+}
+.redbutton:active {
+  background-color: #FF5757;
+}
+
+.noteimg:active {
+  filter: invert(50%)
+}
