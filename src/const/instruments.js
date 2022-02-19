@@ -27,10 +27,10 @@ export const instruments = [
     label: 'Alto Sax',
     value: 'alto_sax-mp3'
   },
-  {
+  /*{
     label: 'Applause',
     value: 'applause-mp3'
-  },
+  },*/
   {
     label: 'Bagpipe',
     value: 'bagpipe-mp3'
@@ -47,10 +47,10 @@ export const instruments = [
     label: 'Bassoon',
     value: 'bassoon-mp3'
   },
-  {
+  /*{
     label: 'Bird Tweet',
     value: 'bird_tweet-mp3'
-  },
+  },*/
   {
     label: 'Blown Bottle',
     value: 'blown_bottle-mp3'
@@ -59,10 +59,10 @@ export const instruments = [
     label: 'Brass Section',
     value: 'brass_section-mp3'
   },
-  {
+  /*{
     label: 'Breath Noise',
     value: 'breath_noise-mp3'
-  },
+  },*/
   {
     label: 'Bright Acoustic Piano',
     value: 'bright_acoustic_piano-mp3'
@@ -203,10 +203,10 @@ export const instruments = [
     label: 'Guitar Harmonics',
     value: 'guitar_harmonics-mp3'
   },
-  {
+  /*{
     label: 'Gunshot',
     value: 'gunshot-mp3'
-  },
+  },*/
   {
     label: 'Harmonica',
     value: 'harmonica-mp3'
@@ -215,10 +215,10 @@ export const instruments = [
     label: 'Harpsichord',
     value: 'harpsichord-mp3'
   },
-  {
+  /*{
     label: 'Helicopter',
     value: 'helicopter-mp3'
-  },
+  },*/
   {
     label: 'Honkytonk Piano',
     value: 'honkytonk_piano-mp3'
@@ -363,10 +363,10 @@ export const instruments = [
     label: 'Rock Organ',
     value: 'rock_organ-mp3'
   },
-  {
+  /*{
     label: 'Seashore',
     value: 'seashore-mp3'
-  },
+  },*/
   {
     label: 'Shakuhachi',
     value: 'shakuhachi-mp3'
@@ -447,10 +447,10 @@ export const instruments = [
     label: 'Tango Accordion',
     value: 'tango_accordion-mp3'
   },
-  {
+  /*{
     label: 'Telephone Ring',
     value: 'telephone_ring-mp3'
-  },
+  },*/
   {
     label: 'Tenor Sax',
     value: 'tenor_sax-mp3'

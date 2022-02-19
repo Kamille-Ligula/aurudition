@@ -66,6 +66,9 @@ export const Octave = (props) => {
             octaves={state.octaves}
             blackWidth={blackWidth}
             blackHeight={blackHeight}
+
+            answer={state.answer}
+            note={state.note}
           />
         )
       })}

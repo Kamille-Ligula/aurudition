@@ -52,7 +52,30 @@ export const Note = (props) => {
       }}
       onClick={() => playNote(state.name+state.octaveID, state.instrument)}
     >
-      {allNotes[state.name]}
+      {
+        state.answer && state.note[state.note.length-1] === state.name+state.octaveID ?
+          state.note[state.note.length-1].length > 2 ?
+            <img
+              className="noteimg"
+              src={'/aurudition/img/notes/black4.png'}
+              alt={''}
+              style={{
+                width: state.blackWidth+'vw',
+                height: state.blackHeight+'vh',
+              }}
+            />
+          :
+            <img
+              className="noteimg"
+              src={'/aurudition/img/notes/white4.png'}
+              alt={''}
+              style={{
+                width: state.whiteWidth+'vw',
+                height: state.whiteHeight+'vh'
+              }}
+            />
+        : allNotes[state.name]
+      }
     </span>
   )
 }

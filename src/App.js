@@ -3,7 +3,7 @@ import {Piano} from './components/Piano';
 import {playNote} from './lib/playNote';
 import {instruments} from './const/instruments';
 import {playRandomNote} from './lib/playRandomNote';
-import {notes} from './const/notes';
+import {notes, notesDictionary, octavesDictionary} from './const/notes';
 import {wait} from './lib/wait';
 import {noteButton, selectionButton, noteText, notesAndAnswers, noteButtonVertical, selectionButtonVertical, noteTextVertical} from './styles/styles.js';
 import './styles/styles.css';
@@ -18,6 +18,7 @@ export default function App() {
   const [windowWidth, setwindowWidth] = useState(window.innerWidth);
   const [windowHeight, setwindowHeight] = useState(window.innerHeight);
   const [divisor, setdivisor] = useState(window.innerWidth/window.innerHeight*8);
+  const [notesNaming, setnotesNaming] = useState(localStorage.getItem("noteNamingConvention") || 0);
 
   function handleWindowSizeChange() {
     setwindowWidth(window.innerWidth);
@@ -68,6 +69,14 @@ export default function App() {
   return (
     <div className='noselect'>
       <div className='getNoteButtons'>
+        <select style={isVertical ? selectionButtonVertical : selectionButton} value={notesNaming} id="conventionsList" onChange={(e) => { setnotesNaming(e.target.value); localStorage.setItem("notesNaming", e.target.value); }}>
+          {
+            ['English notation', 'German notation', 'Italian notation'].map((convention, conventionIndex) => (
+              <option key={convention+conventionIndex} value={conventionIndex}>{convention}</option>
+            ))
+          }
+        </select>
+
         {/* Instrument and range */}
         <div>
           <select style={isVertical ? selectionButtonVertical : selectionButton} value={instrument} id="instrumentsList" onChange={(e) => { pickIntrument(e.target.value) }}>
@@ -80,12 +89,12 @@ export default function App() {
           <span>&nbsp;</span>
           <select style={isVertical ? selectionButtonVertical : selectionButton} value={lowerNoteAndPitch} id="notesList" onChange={(e) => { setlowerNoteAndPitch(e.target.value); localStorage.setItem("lowerNoteAndPitch", e.target.value); }}>
             {
-              [0,1,2,3,4,5,6,7].map((pitch) => (
+              octavesDictionary.map((pitch, pitchIndex) => (
                 notes.filter(function(item, index) {
-                  if (pitch!==0 || note==='A' || note==='Bb' || note==='B') { return true }
+                  if (pitchIndex!==0 || note==='A' || note==='Bb' || note==='B') { return true }
                   else { return false }
                 }).map((note) => (
-                  <option key={note+pitch} value={note+pitch}>{note+pitch}</option>
+                  <option key={note+pitchIndex} value={note+pitchIndex}>{notesDictionary[note][notesNaming]+pitch}</option>
                 ))
               ))
             }
@@ -93,12 +102,12 @@ export default function App() {
           <span>&nbsp;</span>
           <select style={isVertical ? selectionButtonVertical : selectionButton} value={higherNoteAndPitch} id="notesList" onChange={(e) => { sethigherNoteAndPitch(e.target.value); localStorage.setItem("higherNoteAndPitch", e.target.value); }}>
             {
-              [0,1,2,3,4,5,6,7].map((pitch) => (
+              octavesDictionary.map((pitch, pitchIndex) => (
                 notes.filter(function(item, index) {
-                  if (pitch!==0 || note==='A' || note==='Bb' || note==='B') { return true }
+                  if (pitchIndex!==0 || note==='A' || note==='Bb' || note==='B') { return true }
                   else { return false }
                 }).map((note) => (
-                  <option key={note+pitch} value={note+pitch}>{note+pitch}</option>
+                  <option key={note+pitchIndex} value={note+pitchIndex}>{notesDictionary[note][notesNaming]+pitch}</option>
                 ))
               ))
             }
@@ -106,33 +115,35 @@ export default function App() {
         </div>
 
         {/* Random notes buttons */}
-        <div>
-          {isVertical ? <p/> : <span>&nbsp;</span>}<input className='button' type="button" value="Play a random note" style={isVertical ? noteButtonVertical : noteButton} onClick={() => { askForNotes(1) }} />
-          {isVertical ? <p/> : <span>&nbsp;</span>}<input className='button' type="button" value="Play two random notes" style={isVertical ? noteButtonVertical : noteButton} onClick={() => { askForNotes(2) }} />
-        </div>
+        {
+          note.length >= 1 && !answer ?
+            <div>
+              {isVertical ? <p/> : <span>&nbsp;</span>}<input className='redbutton' type="button" value="Show answer" style={isVertical ? noteButtonVertical : noteButton} onClick={() => { showAnswer() }} />
+              {isVertical ? <p/> : <span>&nbsp;</span>}<input className='button' type="button" value="Repeat" style={isVertical ? noteButtonVertical : noteButton} onClick={() => { setrepeat(!repeat) }} />
+            </div>
+          :
+            <div>
+              {isVertical ? <p/> : <span>&nbsp;</span>}<input className='button' type="button" value="Play a random note" style={isVertical ? noteButtonVertical : noteButton} onClick={() => { askForNotes(1) }} />
+              {isVertical ? <p/> : <span>&nbsp;</span>}<input className='button' type="button" value="Play two random notes" style={isVertical ? noteButtonVertical : noteButton} onClick={() => { askForNotes(2) }} />
+            </div>
+        }
 
         {/* Notes and answers */}
         <div style={notesAndAnswers}>
-          { answer ?
-            <div style={isVertical ? noteTextVertical : noteText}>{note.map((key, index) => {
-              if (index > 0) { return <span key={key+index}> - {key}</span> }
-              else { return <span key={key}>{key}</span> }
-            })}</div>
-            : note.length === 1 ?
+          {
+            answer ?
+              <div style={isVertical ? noteTextVertical : noteText}>{note.map((key, index) => {
+                if (index > 0) { return <span key={key+index}> - {notesDictionary[key.slice(0, -1)][notesNaming]+octavesDictionary[key[key.length-1]]}</span> }
+                else { return <span key={key}>{notesDictionary[key.slice(0, -1)][notesNaming]+octavesDictionary[key[key.length-1]]}</span> }
+              })}</div>
+              : note.length === 1 ?
                 <div style={isVertical ? noteTextVertical : noteText}>
                   ?
                 </div>
-              : (note.length > 1) &&
-                <div style={isVertical ? noteTextVertical : noteText}>
-                  {note[0]} - ?
-                </div>
-          }
-          {
-            note.length >= 1 && !answer &&
-            <div>
-              <input className='redbutton' type="button" value="Show answer" style={isVertical ? noteButtonVertical : noteButton} onClick={() => { showAnswer() }} />
-              {isVertical ? <p/> : <span>&nbsp;</span>}<input className='button' type="button" value="Repeat" style={isVertical ? noteButtonVertical : noteButton} onClick={() => { setrepeat(!repeat) }} />
-            </div>
+                : (note.length > 1) &&
+                  <div style={isVertical ? noteTextVertical : noteText}>
+                    {notesDictionary[note[0].slice(0, -1)][notesNaming]+octavesDictionary[note[0][note[0].length-1]]} - ?
+                  </div>
           }
         </div>
       </div>
@@ -140,6 +151,8 @@ export default function App() {
       <Piano
         instrument={instrument}
         divisor={divisor}
+        answer={answer}
+        note={note}
       />
     </div>
   );

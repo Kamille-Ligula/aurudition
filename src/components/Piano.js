@@ -77,6 +77,9 @@ export const Piano = (props) => {
               octavePositionDiff={octavePositionDiff}
               baseBottomPosition={baseBottomPosition}
               octaves={octaves}
+
+              answer={state.answer}
+              note={state.note}
             />
           </div>
         )

@@ -53,16 +53,16 @@ img {
 .button {
   border-radius: 8px;
   padding: 10px 24px;
-  background-color: #4CAF50;
+  background-color: #5C60CF;
   color: black;
   border: none;
 }
 .button:hover {
-  background-color: #1C9F20;
+  background-color: #454ACE;
   color: white;
 }
 .button:active {
-  background-color: #4CAF50;
+  background-color: #5C60CF;
 }
 
 .redbutton {
