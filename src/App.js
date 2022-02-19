@@ -9,7 +9,7 @@ import {noteButton, selectionButton, noteText, notesAndAnswers, noteButtonVertic
 import './styles/styles.css';
 
 export default function App() {
-  const [note, setnote] = useState([]);
+  const [riddle, setriddle] = useState([]);
   const [instrument, setinstrument] = useState(localStorage.getItem("instrument") || 'acoustic_grand_piano-mp3');
   const [repeat, setrepeat] = useState(false);
   const [answer, setanswer] = useState(false);
@@ -44,18 +44,18 @@ export default function App() {
 
     setanswer(false);
 
-    setnote(randomCombination);
+    setriddle(randomCombination);
   }
 
   useEffect(() => {
     async function asyncFunction() {
-      for (let i=0; i<note.length; i++){
-        playNote(note[i], instrument);
+      for (let i=0; i<riddle.length; i++){
+        playNote(riddle[i], instrument);
         await wait(500);
       }
     }
     asyncFunction();
-  }, [note, repeat, instrument]);
+  }, [riddle, repeat, instrument]);
 
   function showAnswer() {
     setanswer(true);
@@ -91,7 +91,7 @@ export default function App() {
             {
               octavesDictionary.map((pitch, pitchIndex) => (
                 notes.filter(function(item, index) {
-                  if (pitchIndex!==0 || note==='A' || note==='Bb' || note==='B') { return true }
+                  if (pitchIndex!==0 || riddle==='A' || riddle==='Bb' || riddle==='B') { return true }
                   else { return false }
                 }).map((note) => (
                   <option key={note+pitchIndex} value={note+pitchIndex}>{notesDictionary[note][notesNaming]+pitch}</option>
@@ -104,7 +104,7 @@ export default function App() {
             {
               octavesDictionary.map((pitch, pitchIndex) => (
                 notes.filter(function(item, index) {
-                  if (pitchIndex!==0 || note==='A' || note==='Bb' || note==='B') { return true }
+                  if (pitchIndex!==0 || riddle==='A' || riddle==='Bb' || riddle==='B') { return true }
                   else { return false }
                 }).map((note) => (
                   <option key={note+pitchIndex} value={note+pitchIndex}>{notesDictionary[note][notesNaming]+pitch}</option>
@@ -116,7 +116,7 @@ export default function App() {
 
         {/* Random notes buttons */}
         {
-          note.length >= 1 && !answer ?
+          riddle.length >= 1 && !answer ?
             <div>
               {isVertical ? <p/> : <span>&nbsp;</span>}<input className='redbutton' type="button" value="Show answer" style={isVertical ? noteButtonVertical : noteButton} onClick={() => { showAnswer() }} />
               {isVertical ? <p/> : <span>&nbsp;</span>}<input className='button' type="button" value="Repeat" style={isVertical ? noteButtonVertical : noteButton} onClick={() => { setrepeat(!repeat) }} />
@@ -132,17 +132,17 @@ export default function App() {
         <div style={notesAndAnswers}>
           {
             answer ?
-              <div style={isVertical ? noteTextVertical : noteText}>{note.map((key, index) => {
+              <div style={isVertical ? noteTextVertical : noteText}>{riddle.map((key, index) => {
                 if (index > 0) { return <span key={key+index}> - {notesDictionary[key.slice(0, -1)][notesNaming]+octavesDictionary[key[key.length-1]]}</span> }
                 else { return <span key={key}>{notesDictionary[key.slice(0, -1)][notesNaming]+octavesDictionary[key[key.length-1]]}</span> }
               })}</div>
-              : note.length === 1 ?
+              : riddle.length === 1 ?
                 <div style={isVertical ? noteTextVertical : noteText}>
                   ?
                 </div>
-                : (note.length > 1) &&
+                : (riddle.length > 1) &&
                   <div style={isVertical ? noteTextVertical : noteText}>
-                    {notesDictionary[note[0].slice(0, -1)][notesNaming]+octavesDictionary[note[0][note[0].length-1]]} - ?
+                    {notesDictionary[riddle[0].slice(0, -1)][notesNaming]+octavesDictionary[riddle[0][riddle[0].length-1]]} - ?
                   </div>
           }
         </div>
@@ -152,7 +152,7 @@ export default function App() {
         instrument={instrument}
         divisor={divisor}
         answer={answer}
-        note={note}
+        riddle={riddle}
       />
     </div>
   );

@@ -81,7 +81,7 @@ export const Piano = (props) => {
               octaves={octaves}
 
               answer={state.answer}
-              note={state.note}
+              riddle={state.riddle}
             />
           </div>
         )

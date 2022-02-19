@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {Note} from './Note';
+import {Key} from './Key';
 import '../styles/styles.css';
 
 export const Octave = (props) => {
@@ -49,7 +49,7 @@ export const Octave = (props) => {
     <div>
       {Object.entries(notes).map((key, index) => {
         return (
-          <Note
+          <Key
             key={index+state.id}
             name={key[0]}
             classification={key[1].classification}
@@ -68,7 +68,7 @@ export const Octave = (props) => {
             blackHeight={blackHeight}
 
             answer={state.answer}
-            note={state.note}
+            riddle={state.riddle}
           />
         )
       })}
