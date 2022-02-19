@@ -12,23 +12,25 @@ export const Piano = (props) => {
   const [octaves, setoctaves] = useState([]);
   const [allPitches, setallPitches] = useState([]);
 
-
-
   useEffect(() => {
     setstate(props);
     setwhiteWidth(48/props.divisor);
-    setbaseOctavePosition(84/props.divisor);
-    setoctavePositionDiff(7*48/props.divisor)
+
+    const baseOctavePositionTemp = 84/props.divisor;
+    const octavePositionDiffTemp = 7*48/props.divisor;
+    setbaseOctavePosition(baseOctavePositionTemp);
+    setoctavePositionDiff(octavePositionDiffTemp)
+
     setoctaves(
       [
-        84/props.divisor-(7*48/props.divisor)*1,
-        84/props.divisor+(7*48/props.divisor)*0,
-        84/props.divisor+(7*48/props.divisor)*1,
-        84/props.divisor+(7*48/props.divisor)*2,
-        84/props.divisor+(7*48/props.divisor)*3,
-        84/props.divisor+(7*48/props.divisor)*4,
-        84/props.divisor+(7*48/props.divisor)*5,
-        84/props.divisor+(7*48/props.divisor)*6,
+        baseOctavePositionTemp-octavePositionDiffTemp*1,
+        baseOctavePositionTemp+octavePositionDiffTemp*0,
+        baseOctavePositionTemp+octavePositionDiffTemp*1,
+        baseOctavePositionTemp+octavePositionDiffTemp*2,
+        baseOctavePositionTemp+octavePositionDiffTemp*3,
+        baseOctavePositionTemp+octavePositionDiffTemp*4,
+        baseOctavePositionTemp+octavePositionDiffTemp*5,
+        baseOctavePositionTemp+octavePositionDiffTemp*6,
       ]
     )
 

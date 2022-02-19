@@ -13,12 +13,12 @@ export default function App() {
   const [instrument, setinstrument] = useState(localStorage.getItem("instrument") || 'acoustic_grand_piano-mp3');
   const [repeat, setrepeat] = useState(false);
   const [answer, setanswer] = useState(false);
-  const [lowerNoteAndPitch, setlowerNoteAndPitch] = useState(localStorage.getItem("lowerNoteAndPitch") || 'A4');
-  const [higherNoteAndPitch, sethigherNoteAndPitch] = useState(localStorage.getItem("higherNoteAndPitch") || 'F6');
+  const [lowerNoteAndPitch, setlowerNoteAndPitch] = useState(localStorage.getItem("lowerNoteAndPitch") || 'C5');
+  const [higherNoteAndPitch, sethigherNoteAndPitch] = useState(localStorage.getItem("higherNoteAndPitch") || 'C6');
   const [windowWidth, setwindowWidth] = useState(window.innerWidth);
   const [windowHeight, setwindowHeight] = useState(window.innerHeight);
   const [divisor, setdivisor] = useState(window.innerWidth/window.innerHeight*8);
-  const [notesNaming, setnotesNaming] = useState(localStorage.getItem("noteNamingConvention") || 0);
+  const [notesNaming, setnotesNaming] = useState(localStorage.getItem("notesNaming") || 0);
 
   function handleWindowSizeChange() {
     setwindowWidth(window.innerWidth);

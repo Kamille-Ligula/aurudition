@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {playNote} from '../lib/playNote';
+import {IndividualKey} from '../lib/IndividualKey';
 import '../styles/styles.css';
 
 export const Note = (props) => {
@@ -8,40 +9,6 @@ export const Note = (props) => {
   useEffect(() => {
     setstate(props);
   }, [props]);
-
-  const whiteKey = <img
-          className="noteimg"
-          src={'/aurudition/img/notes/white.png'}
-          alt={''}
-          style={{
-            width: state.whiteWidth+'vw',
-            height: state.whiteHeight+'vh'
-          }}
-        />,
-        blackKey = <img
-          className="noteimg"
-          src={'/aurudition/img/notes/black.png'}
-          alt={''}
-          style={{
-            width: state.blackWidth+'vw',
-            height: state.blackHeight+'vh',
-          }}
-        />;
-
-  const allNotes = {
-    A: whiteKey,
-    B: whiteKey,
-    C: whiteKey,
-    D: whiteKey,
-    E: whiteKey,
-    F: whiteKey,
-    G: whiteKey,
-    Ab: blackKey,
-    Bb: blackKey,
-    Db: blackKey,
-    Eb: blackKey,
-    Gb: blackKey,
-  };
 
   return (
     <span
@@ -54,27 +21,15 @@ export const Note = (props) => {
     >
       {
         state.answer && state.note[state.note.length-1] === state.name+state.octaveID ?
-          state.note[state.note.length-1].length > 2 ?
-            <img
-              className="noteimg"
-              src={'/aurudition/img/notes/black4.png'}
-              alt={''}
-              style={{
-                width: state.blackWidth+'vw',
-                height: state.blackHeight+'vh',
-              }}
-            />
+          (state.name+state.octaveID).length > 2 ?
+            IndividualKey('black4', state.blackWidth, state.blackHeight)
           :
-            <img
-              className="noteimg"
-              src={'/aurudition/img/notes/white4.png'}
-              alt={''}
-              style={{
-                width: state.whiteWidth+'vw',
-                height: state.whiteHeight+'vh'
-              }}
-            />
-        : allNotes[state.name]
+            IndividualKey('white4', state.whiteWidth, state.whiteHeight)
+        :
+          (state.name+state.octaveID).length > 2 ?
+            IndividualKey('black', state.blackWidth, state.blackHeight)
+          :
+            IndividualKey('white', state.whiteWidth, state.whiteHeight)
       }
     </span>
   )
