@@ -35,3 +35,11 @@ export const selectionButtonVertical = {
 export const noteTextVertical = {
   fontSize: '90px',
 }
+
+export const clueStyle = {
+  color: '#454ACE',
+}
+
+export const answerStyle = {
+  color: '#B9C12F',
+}

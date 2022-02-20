@@ -26,10 +26,16 @@ export const Key = (props) => {
           :
             IndividualKey('white4', state.whiteWidth, state.whiteHeight)
         :
-          (state.name+state.octaveID).length > 2 ?
-            IndividualKey('black', state.blackWidth, state.blackHeight)
+          state.riddle.length > 1 && state.riddle[0] === state.name+state.octaveID ?
+            (state.name+state.octaveID).length > 2 ?
+              IndividualKey('black5', state.blackWidth, state.blackHeight)
+            :
+              IndividualKey('white5', state.whiteWidth, state.whiteHeight)
           :
-            IndividualKey('white', state.whiteWidth, state.whiteHeight)
+            (state.name+state.octaveID).length > 2 ?
+              IndividualKey('black', state.blackWidth, state.blackHeight)
+            :
+              IndividualKey('white', state.whiteWidth, state.whiteHeight)
       }
     </span>
   )

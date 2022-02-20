@@ -5,7 +5,17 @@ import {instruments} from './const/instruments';
 import {playRandomNote} from './lib/playRandomNote';
 import {notes, notesDictionary, octavesDictionary} from './const/notes';
 import {wait} from './lib/wait';
-import {noteButton, selectionButton, noteText, notesAndAnswers, noteButtonVertical, selectionButtonVertical, noteTextVertical} from './styles/styles.js';
+import {
+  noteButton,
+  selectionButton,
+  noteText,
+  notesAndAnswers,
+  noteButtonVertical,
+  selectionButtonVertical,
+  noteTextVertical,
+  clueStyle,
+  answerStyle
+} from './styles/styles.js';
 import './styles/styles.css';
 
 export default function App() {
@@ -69,6 +79,7 @@ export default function App() {
   return (
     <div className='noselect'>
       <div className='getNoteButtons'>
+        {/* Notes naming convention */}
         <select style={isVertical ? selectionButtonVertical : selectionButton} value={notesNaming} id="conventionsList" onChange={(e) => { setnotesNaming(e.target.value); localStorage.setItem("notesNaming", e.target.value); }}>
           {
             ['English notation', 'German notation', 'Italian notation'].map((convention, conventionIndex) => (
@@ -91,7 +102,7 @@ export default function App() {
             {
               octavesDictionary.map((pitch, pitchIndex) => (
                 notes.filter(function(item, index) {
-                  if (pitchIndex!==0 || riddle==='A' || riddle==='Bb' || riddle==='B') { return true }
+                  if (pitchIndex!==0 || item==='A' || item==='Bb' || item==='B') { return true }
                   else { return false }
                 }).map((note) => (
                   <option key={note+pitchIndex} value={note+pitchIndex}>{notesDictionary[note][notesNaming]+pitch}</option>
@@ -104,7 +115,7 @@ export default function App() {
             {
               octavesDictionary.map((pitch, pitchIndex) => (
                 notes.filter(function(item, index) {
-                  if (pitchIndex!==0 || riddle==='A' || riddle==='Bb' || riddle==='B') { return true }
+                  if (pitchIndex!==0 || item==='A' || item==='Bb' || item==='B') { return true }
                   else { return false }
                 }).map((note) => (
                   <option key={note+pitchIndex} value={note+pitchIndex}>{notesDictionary[note][notesNaming]+pitch}</option>
@@ -132,17 +143,30 @@ export default function App() {
         <div style={notesAndAnswers}>
           {
             answer ?
-              <div style={isVertical ? noteTextVertical : noteText}>{riddle.map((key, index) => {
-                if (index > 0) { return <span key={key+index}> - {notesDictionary[key.slice(0, -1)][notesNaming]+octavesDictionary[key[key.length-1]]}</span> }
-                else { return <span key={key}>{notesDictionary[key.slice(0, -1)][notesNaming]+octavesDictionary[key[key.length-1]]}</span> }
-              })}</div>
-              : riddle.length === 1 ?
+              riddle.length === 1 ?
+                <div style={isVertical ? noteTextVertical : noteText}>
+                  <span style={answerStyle}>
+                    {notesDictionary[riddle[0].slice(0, -1)][notesNaming]+octavesDictionary[riddle[0][riddle[0].length-1]]}
+                  </span>
+                </div>
+                : (riddle.length > 1) &&
+                  <div style={isVertical ? noteTextVertical : noteText}>
+                    <span style={clueStyle}>
+                      {notesDictionary[riddle[0].slice(0, -1)][notesNaming]+octavesDictionary[riddle[0][riddle[0].length-1]]}
+                    </span>
+                    {' - '}
+                    <span style={answerStyle}>
+                      {notesDictionary[riddle[1].slice(0, -1)][notesNaming]+octavesDictionary[riddle[1][riddle[1].length-1]]}
+                    </span>
+                  </div>
+            :
+              riddle.length === 1 ?
                 <div style={isVertical ? noteTextVertical : noteText}>
                   ?
                 </div>
                 : (riddle.length > 1) &&
                   <div style={isVertical ? noteTextVertical : noteText}>
-                    {notesDictionary[riddle[0].slice(0, -1)][notesNaming]+octavesDictionary[riddle[0][riddle[0].length-1]]} - ?
+                    <span style={clueStyle}>{notesDictionary[riddle[0].slice(0, -1)][notesNaming]+octavesDictionary[riddle[0][riddle[0].length-1]]}</span> - ?
                   </div>
           }
         </div>
