@@ -12,34 +12,21 @@ export const Octave = (props) => {
     setstate(props);
     setblackWidth(28/props.divisor)
 
-    const naturals = {
-      position: 'absolute',
-      bottom: props.baseBottomPosition,
-    }
-
-    const accidentals = {
-      position: 'absolute',
-      bottom: props.whiteHeight-blackHeight+props.baseBottomPosition,
-    }
-
     const notesProt = {};
     const naturalsList = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
     const accidentalsList = ['Db', 'Eb', 'Gb', 'Ab', 'Bb'];
-    const accidentalsNumbersList = [1, 3, 6, 8, 10];
+    const accidentalsMultipliersList = [1, 3, 6, 8, 10];
+
     for (let i=0; i<naturalsList.length; i++) {
       notesProt[naturalsList[i]] = {
-        classification: naturals,
-        position: props.whiteWidth*i,
-        width: props.whiteWidth,
-        height: props.whiteHeight,
+        bottom: props.baseBottomPosition,
+        offset: props.whiteWidth*i,
       }
     }
     for (let i=0; i<accidentalsList.length; i++) {
       notesProt[accidentalsList[i]] = {
-        classification: accidentals,
-        position: 28/props.divisor*accidentalsNumbersList[i],
-        width: 28/props.divisor,
-        height: blackHeight,
+        bottom: props.whiteHeight-blackHeight+props.baseBottomPosition,
+        offset: 28/props.divisor*accidentalsMultipliersList[i],
       }
     }
     setnotes(notesProt)
@@ -52,23 +39,30 @@ export const Octave = (props) => {
           <Key
             key={index+state.id}
             name={key[0]}
-            classification={key[1].classification}
-            position={key[1].position}
+            bottom={key[1].bottom}
+            offset={key[1].offset}
             octaveID={state.id}
             instrument={state.instrument}
             divisor={state.divisor}
 
             whiteWidth={state.whiteWidth}
             whiteHeight={state.whiteHeight}
-            baseOctavePosition={state.baseOctavePosition}
-            octavePositionDiff={state.octavePositionDiff}
-            baseBottomPosition={state.baseBottomPosition}
-            octaves={state.octaves}
             blackWidth={blackWidth}
             blackHeight={blackHeight}
 
+            baseOctavePosition={state.baseOctavePosition}
+            octavePositionDiff={state.octavePositionDiff}
+            baseBottomPosition={state.baseBottomPosition}
+
+            octaves={state.octaves}
+
             answer={state.answer}
             riddle={state.riddle}
+            showRedAndGreenKeys={state.showRedAndGreenKeys}
+
+            manualFinding={(manualFinding) =>
+              props.manualFinding(manualFinding)
+            }
           />
         )
       })}

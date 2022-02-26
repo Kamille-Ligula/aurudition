@@ -4,7 +4,6 @@ import {playNote} from './lib/playNote';
 import {instruments} from './const/instruments';
 import {playRandomNote} from './lib/playRandomNote';
 import {notes, notesDictionary, octavesDictionary} from './const/notes';
-import {wait} from './lib/wait';
 import {
   noteButton,
   selectionButton,
@@ -14,14 +13,18 @@ import {
   selectionButtonVertical,
   noteTextVertical,
   clueStyle,
-  answerStyle
+  answerStyle,
+  manuallyFoundStyle,
+  textVertical,
+  text,
+  checkboxSizeVertical,
+  checkboxSize
 } from './styles/styles.js';
 import './styles/styles.css';
 
 export default function App() {
   const [riddle, setriddle] = useState([]);
   const [instrument, setinstrument] = useState(localStorage.getItem("instrument") || 'acoustic_grand_piano-mp3');
-  const [repeat, setrepeat] = useState(false);
   const [answer, setanswer] = useState(false);
   const [lowerNoteAndPitch, setlowerNoteAndPitch] = useState(localStorage.getItem("lowerNoteAndPitch") || 'C5');
   const [higherNoteAndPitch, sethigherNoteAndPitch] = useState(localStorage.getItem("higherNoteAndPitch") || 'C6');
@@ -29,6 +32,24 @@ export default function App() {
   const [windowHeight, setwindowHeight] = useState(window.innerHeight);
   const [divisor, setdivisor] = useState(window.innerWidth/window.innerHeight*8);
   const [notesNaming, setnotesNaming] = useState(localStorage.getItem("notesNaming") || 0);
+  const [manualFinding, setmanualFinding] = useState(false);
+  const [showRedAndGreenKeys, setshowRedAndGreenKeys] = useState();
+
+  const handleChange = (e) => {
+    setshowRedAndGreenKeys(e.target.checked);
+    localStorage.setItem("showRedAndGreenKeys", e.target.checked);
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("showRedAndGreenKeys") === 'true') {
+      document.getElementById("colorKeys").defaultChecked = true;
+      setshowRedAndGreenKeys(true);
+    }
+    else {
+      document.getElementById("colorKeys").defaultChecked = false;
+      setshowRedAndGreenKeys(false);
+    }
+  }, []);
 
   function handleWindowSizeChange() {
     setwindowWidth(window.innerWidth);
@@ -53,19 +74,12 @@ export default function App() {
     }
 
     setanswer(false);
+    setmanualFinding(false);
 
     setriddle(randomCombination);
-  }
 
-  useEffect(() => {
-    async function asyncFunction() {
-      for (let i=0; i<riddle.length; i++){
-        playNote(riddle[i], instrument);
-        await wait(500);
-      }
-    }
-    asyncFunction();
-  }, [riddle, repeat, instrument]);
+    playNote(randomCombination, instrument);
+  }
 
   function showAnswer() {
     setanswer(true);
@@ -75,6 +89,10 @@ export default function App() {
     setinstrument(which);
     localStorage.setItem("instrument", which);
   }
+
+  useEffect(() => {
+    setanswer(manualFinding);
+  }, [manualFinding]);
 
   return (
     <div className='noselect'>
@@ -125,12 +143,19 @@ export default function App() {
           </select>
         </div>
 
+        {/* Color keys Option */}
+        <div style={isVertical ? textVertical : text}>
+          <label>
+      		  <br/>Color right & wrong: <input style={isVertical ? checkboxSizeVertical : checkboxSize} type="checkbox" className="checkbox" id="colorKeys" onClick={handleChange} />
+      		</label>
+        </div>
+
         {/* Random notes buttons */}
         {
           riddle.length >= 1 && !answer ?
             <div>
-              {isVertical ? <p/> : <span>&nbsp;</span>}<input className='redbutton' type="button" value="Show answer" style={isVertical ? noteButtonVertical : noteButton} onClick={() => { showAnswer() }} />
-              {isVertical ? <p/> : <span>&nbsp;</span>}<input className='button' type="button" value="Repeat" style={isVertical ? noteButtonVertical : noteButton} onClick={() => { setrepeat(!repeat) }} />
+              {isVertical ? <p/> : <span>&nbsp;</span>}<input className='yellowbutton' type="button" value="Show answer" style={isVertical ? noteButtonVertical : noteButton} onClick={() => { showAnswer() }} />
+              {isVertical ? <p/> : <span>&nbsp;</span>}<input className='button' type="button" value="Repeat" style={isVertical ? noteButtonVertical : noteButton} onClick={() => { playNote(riddle, instrument) }} />
             </div>
           :
             <div>
@@ -145,7 +170,7 @@ export default function App() {
             answer ?
               riddle.length === 1 ?
                 <div style={isVertical ? noteTextVertical : noteText}>
-                  <span style={answerStyle}>
+                  <span style={manualFinding ? manuallyFoundStyle : answerStyle}>
                     {notesDictionary[riddle[0].slice(0, -1)][notesNaming]+octavesDictionary[riddle[0][riddle[0].length-1]]}
                   </span>
                 </div>
@@ -155,7 +180,7 @@ export default function App() {
                       {notesDictionary[riddle[0].slice(0, -1)][notesNaming]+octavesDictionary[riddle[0][riddle[0].length-1]]}
                     </span>
                     {' - '}
-                    <span style={answerStyle}>
+                    <span style={manualFinding ? manuallyFoundStyle : answerStyle}>
                       {notesDictionary[riddle[1].slice(0, -1)][notesNaming]+octavesDictionary[riddle[1][riddle[1].length-1]]}
                     </span>
                   </div>
@@ -177,6 +202,11 @@ export default function App() {
         divisor={divisor}
         answer={answer}
         riddle={riddle}
+        showRedAndGreenKeys={showRedAndGreenKeys}
+
+        manualFinding={(manualFinding) =>
+          setmanualFinding(manualFinding)
+        }
       />
     </div>
   );

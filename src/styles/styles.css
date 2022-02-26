@@ -49,7 +49,6 @@ img {
   top: 6vh;
 }
 
-
 .button {
   border-radius: 8px;
   padding: 10px 24px;
@@ -78,6 +77,21 @@ img {
 }
 .redbutton:active {
   background-color: #FF5757;
+}
+
+.yellowbutton {
+  border-radius: 8px;
+  padding: 10px 24px;
+  background-color: #D4D644;
+  color: black;
+  border: none;
+}
+.yellowbutton:hover {
+  background-color: #C6C821;
+  color: white;
+}
+.yellowbutton:active {
+  background-color: #D4D644;
 }
 
 .noteimg:active {

@@ -35,26 +35,26 @@ export const Piano = (props) => {
     )
 
     const barHeight = 38/8;
+    const barWidth = 337/props.divisor;
 
     const allPitchesProt = [];
     for (let i=0; i<=7; i++) {
       allPitchesProt.push(
         <img
-            className="pitchimg"
-            src={'/aurudition/img/pitch'+i+'.png'}
-            alt={''}
-            style={{
-              width: 337/props.divisor+'vw',
-              height: barHeight+'vh',
-            }}
-          />
+          className="pitchimg"
+          src={'/aurudition/img/pitch'+i+'.png'}
+          alt={''}
+          style={{
+            width: barWidth+'vw',
+            height: barHeight+'vh',
+          }}
+        />
       )
     }
     setallPitches(allPitchesProt);
   }, [props]);
 
   const pitches = {
-    position: 'absolute',
     bottom: whiteHeight+baseBottomPosition,
   }
 
@@ -65,7 +65,7 @@ export const Piano = (props) => {
           <div key={'octave'+index}>
             <span style={{
               left: key+'vw',
-              position: pitches.position,
+              position: 'absolute',
               bottom: pitches.bottom+'vh',
             }}>{allPitches[index]}</span>
             <Octave
@@ -79,9 +79,14 @@ export const Piano = (props) => {
               octavePositionDiff={octavePositionDiff}
               baseBottomPosition={baseBottomPosition}
               octaves={octaves}
+              showRedAndGreenKeys={state.showRedAndGreenKeys}
 
               answer={state.answer}
               riddle={state.riddle}
+
+              manualFinding={(manualFinding) =>
+                props.manualFinding(manualFinding)
+              }
             />
           </div>
         )
