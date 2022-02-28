@@ -59,9 +59,14 @@ export const Octave = (props) => {
             answer={state.answer}
             riddle={state.riddle}
             showRedAndGreenKeys={state.showRedAndGreenKeys}
+            lowerNoteAndPitch={state.lowerNoteAndPitch}
+            higherNoteAndPitch={state.higherNoteAndPitch}
 
-            manualFinding={(manualFinding) =>
-              props.manualFinding(manualFinding)
+            setmanualFinding={(manualFinding) =>
+              props.setmanualFinding(manualFinding)
+            }
+            setmanualChordFinding={(manualChordFinding) =>
+              props.setmanualChordFinding(manualChordFinding)
             }
           />
         )

@@ -5,7 +5,6 @@ import '../styles/styles.css';
 export const Piano = (props) => {
   const [state, setstate] = useState(props);
   const [whiteWidth, setwhiteWidth] = useState();
-  const [whiteHeight] = useState(202/8);
   const [baseOctavePosition, setbaseOctavePosition] = useState();
   const [octavePositionDiff, setoctavePositionDiff] = useState();
   const [baseBottomPosition] = useState(0);
@@ -21,18 +20,28 @@ export const Piano = (props) => {
     setbaseOctavePosition(baseOctavePositionTemp);
     setoctavePositionDiff(octavePositionDiffTemp)
 
-    setoctaves(
-      [
-        baseOctavePositionTemp-octavePositionDiffTemp*1,
-        baseOctavePositionTemp+octavePositionDiffTemp*0,
-        baseOctavePositionTemp+octavePositionDiffTemp*1,
-        baseOctavePositionTemp+octavePositionDiffTemp*2,
-        baseOctavePositionTemp+octavePositionDiffTemp*3,
-        baseOctavePositionTemp+octavePositionDiffTemp*4,
-        baseOctavePositionTemp+octavePositionDiffTemp*5,
-        baseOctavePositionTemp+octavePositionDiffTemp*6,
-      ]
-    )
+    const octavesMultiplier = [];
+      octavesMultiplier[0] = -1;
+      octavesMultiplier[1] = 0;
+      octavesMultiplier[2] = 1;
+      octavesMultiplier[3] = 2;
+      octavesMultiplier[4] = 3;
+      octavesMultiplier[5] = 4;
+      octavesMultiplier[6] = 5;
+      octavesMultiplier[7] = 6;
+
+    const octavesTemp = [
+      baseOctavePositionTemp+octavePositionDiffTemp*octavesMultiplier[0],
+      baseOctavePositionTemp+octavePositionDiffTemp*octavesMultiplier[1],
+      baseOctavePositionTemp+octavePositionDiffTemp*octavesMultiplier[2],
+      baseOctavePositionTemp+octavePositionDiffTemp*octavesMultiplier[3],
+      baseOctavePositionTemp+octavePositionDiffTemp*octavesMultiplier[4],
+      baseOctavePositionTemp+octavePositionDiffTemp*octavesMultiplier[5],
+      baseOctavePositionTemp+octavePositionDiffTemp*octavesMultiplier[6],
+      baseOctavePositionTemp+octavePositionDiffTemp*octavesMultiplier[7],
+    ];
+
+    setoctaves(octavesTemp);
 
     const barHeight = 38/8;
     const barWidth = 337/props.divisor;
@@ -55,7 +64,7 @@ export const Piano = (props) => {
   }, [props]);
 
   const pitches = {
-    bottom: whiteHeight+baseBottomPosition,
+    bottom: state.whiteHeight+baseBottomPosition,
   }
 
   return (
@@ -67,25 +76,33 @@ export const Piano = (props) => {
               left: key+'vw',
               position: 'absolute',
               bottom: pitches.bottom+'vh',
-            }}>{allPitches[index]}</span>
+            }}>
+              {allPitches[index]}
+            </span>
+
             <Octave
               id={index}
               instrument={state.instrument}
               divisor={state.divisor}
 
               whiteWidth={whiteWidth}
-              whiteHeight={whiteHeight}
+              whiteHeight={state.whiteHeight}
               baseOctavePosition={baseOctavePosition}
               octavePositionDiff={octavePositionDiff}
               baseBottomPosition={baseBottomPosition}
               octaves={octaves}
               showRedAndGreenKeys={state.showRedAndGreenKeys}
+              lowerNoteAndPitch={state.lowerNoteAndPitch}
+              higherNoteAndPitch={state.higherNoteAndPitch}
 
               answer={state.answer}
               riddle={state.riddle}
 
-              manualFinding={(manualFinding) =>
-                props.manualFinding(manualFinding)
+              setmanualFinding={(manualFinding) =>
+                props.setmanualFinding(manualFinding)
+              }
+              setmanualChordFinding={(manualChordFinding) =>
+                props.setmanualChordFinding(manualChordFinding)
               }
             />
           </div>

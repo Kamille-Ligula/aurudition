@@ -28,6 +28,10 @@ export const selectionButtonVertical = {
   fontSize: '90px',
 }
 
+export const infoTitle = {
+  fontSize: '25px',
+}
+
 export const noteTextVertical = {
   fontSize: '90px',
 }

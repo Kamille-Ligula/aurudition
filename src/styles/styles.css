@@ -40,13 +40,38 @@ img {
 }
 
 .getNoteButtons {
-  z-index: 999;
-  elevation: 999;
+  z-index: 998;
+  elevation: 998;
   position: fixed;
   text-align: center;
   width: 100%;
   height: auto;
   top: 6vh;
+}
+
+.infos {
+  z-index: 998;
+  elevation: 998;
+  position: fixed;
+  text-align: justify;
+  width: 80%;
+  left: 10%;
+  top: 6vh;
+  padding-top: 1.5vh;
+  padding-bottom: 1.5vh;
+  padding-left: 1.5vw;
+  padding-right: 1.5vw;
+  overflow-y: scroll;
+  border-style: inset;
+  background: #eee;
+}
+
+.infoButton {
+  z-index: 999;
+  elevation: 999;
+  position: fixed;
+  top: 1%;
+  right: 1%;
 }
 
 .button {
@@ -96,4 +121,20 @@ img {
 
 .noteimg:active {
   filter: invert(50%)
+}
+
+a {
+  text-decoration: none;
+}
+a:link {
+  color: #1E25FF;
+}
+a:visited {
+  color: #1E25FF;
+}
+a:hover {
+  color: #1AFF00;
+}
+a:active {
+  color: #A0FF95;
 }
