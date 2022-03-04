@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import {notes, notesDictionary, octavesDictionary, fullPiano} from '../const/notes';
 import {playRandomNote} from '../lib/playRandomNote';
 import {playNote} from '../lib/playNote';
-import {chords} from '../const/chords';
+import {chordTypes} from '../const/chords';
 import {getRandomInt} from '../lib/getRandomInt';
 import {playChord} from '../lib/playChord';
 import {instruments} from '../const/instruments';
@@ -19,8 +19,6 @@ import {
   manuallyFoundStyle,
   textVertical,
   text,
-  checkboxSizeVertical,
-  checkboxSize
 } from '../styles/styles.js';
 import '../styles/styles.css';
 
@@ -31,15 +29,6 @@ export const Controls = (props) => {
 
   useEffect(() => {
     setstate(props);
-
-    if (localStorage.getItem("showRedAndGreenKeys") === 'false') {
-      document.getElementById("colorKeys").defaultChecked = false;
-      props.setshowRedAndGreenKeys(false);
-    }
-    else {
-      document.getElementById("colorKeys").defaultChecked = true;
-      props.setshowRedAndGreenKeys(true);
-    }
   }, [props]);
 
   function showAnswer() {
@@ -64,19 +53,40 @@ export const Controls = (props) => {
   }
 
   async function askForChords() {
-    const randomChordData = chords[getRandomInt(chords.length)];
-    const randomChordNotes = [...randomChordData.notes];
-    const randomChordName = [...randomChordData.name];
+    let randomChordType;
+    let randomChordBase;
 
-    const memory = [];
-    let whichOctave = state.lowerNoteAndPitch.slice(-1);
-
-    for (let i=0; i<randomChordNotes.length; i++) {
-      memory.push(notes.indexOf(randomChordNotes[i]));
-      if (memory[i-1] > notes.indexOf(randomChordNotes[i])) {
-        whichOctave++;
+    const userSelectedChords = [...chordTypes];
+    for (let i=chordTypes.length; i>0; i--) {
+      if (!state.userChords[i]) {
+        userSelectedChords.splice(i, 1);
       }
-      randomChordNotes[i] = randomChordNotes[i]+whichOctave;
+    }
+
+    for (let i=0; i<Infinity; i++) {
+      randomChordType = userSelectedChords[getRandomInt(userSelectedChords.length)];
+
+      randomChordBase = getRandomInt(
+                          fullPiano.indexOf(state.higherNoteAndPitch)-
+                          fullPiano.indexOf(state.lowerNoteAndPitch)
+                        )+
+                        fullPiano.indexOf(state.lowerNoteAndPitch);
+
+      let breakLoop = false;
+      if (fullPiano[randomChordBase + randomChordType.notes[randomChordType.notes.length-1]]) {
+        if (randomChordBase + randomChordType.notes[randomChordType.notes.length-1] <= fullPiano.indexOf(state.higherNoteAndPitch)) {
+          breakLoop = true;
+        }
+      }
+      if (breakLoop) { break }
+    }
+
+    const randomChordName = fullPiano[randomChordBase]+' '+randomChordType.name;
+    const randomChordNotes = [];
+    for (let i=0; i<randomChordType.notes.length; i++) {
+      randomChordNotes.push(
+        fullPiano[randomChordBase+randomChordType.notes[i]],
+      );
     }
 
     props.setanswer(false);
@@ -89,11 +99,6 @@ export const Controls = (props) => {
     playChord(randomChordNotes, state.instrument);
   }
 
-  const handleChange = (e) => {
-    props.setshowRedAndGreenKeys(e.target.checked);
-    localStorage.setItem("showRedAndGreenKeys", e.target.checked);
-  };
-
   let isVertical: boolean = (state.windowWidth/state.windowHeight < 1);
 
   function pickInstrument(which) {
@@ -102,7 +107,7 @@ export const Controls = (props) => {
   }
 
   return (
-    <div className='getNoteButtons'>
+    <div className='innerWindow functionnalButtons' style={{height: 78-state.whiteHeight+'vh'}}>
       {/* Notes naming convention */}
       <select style={isVertical ? selectionButtonVertical : selectionButton} value={notesNaming} id="conventionsList" onChange={(e) => { setnotesNaming(e.target.value); localStorage.setItem("notesNaming", e.target.value); }}>
         {
@@ -151,13 +156,6 @@ export const Controls = (props) => {
         </select>
       </div>
 
-      {/* Color keys Option */}
-      <div style={isVertical ? textVertical : text}>
-        <label>
-          <br/>Color right & wrong: <input style={isVertical ? checkboxSizeVertical : checkboxSize} type="checkbox" className="checkbox" id="colorKeys" onClick={handleChange} />
-        </label>
-      </div>
-
       {/* Random notes buttons */}
       {
         state.riddle.length >= 3 && !state.answer ? // chord
@@ -176,8 +174,7 @@ export const Controls = (props) => {
               {isVertical ? <p/> : <span>&nbsp;</span>}<input className='button' type="button" value="Play a random note" style={isVertical ? noteButtonVertical : noteButton} onClick={() => { askForNotes(1) }} />
               {isVertical ? <p/> : <span>&nbsp;</span>}<input className='button' type="button" value="Play two random notes" style={isVertical ? noteButtonVertical : noteButton} onClick={() => { askForNotes(2) }} />
               {
-                (parseInt(state.higherNoteAndPitch.slice(-1)) - parseInt(state.lowerNoteAndPitch.slice(-1)) >= 2 &&
-                state.higherNoteAndPitch.slice(0, -1) === 'C' && state.lowerNoteAndPitch.slice(0, -1) === 'C') &&
+                (fullPiano.indexOf(state.higherNoteAndPitch) - fullPiano.indexOf(state.lowerNoteAndPitch) > 18) &&
                   <span>
                     {isVertical ? <p/> : <span>&nbsp;</span>}<input className='button' type="button" value="Play a random chord" style={isVertical ? noteButtonVertical : noteButton} onClick={() => { askForChords() }} />
                   </span>

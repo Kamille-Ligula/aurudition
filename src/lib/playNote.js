@@ -15,6 +15,8 @@ export async function playNote(which, instrument) {
   for (let i=0; i<which.length; i++) {
     audio[i].play();
     await wait(600);
-    audio[i].volume = 0.0;
+    if (instrument !== 'acoustic_grand_piano-mp3') {
+      audio[i].volume = 0.0;
+    }
   }
 }

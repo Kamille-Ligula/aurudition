@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import {playNote} from '../lib/playNote';
 import {IndividualKey} from './IndividualKey';
 import '../styles/styles.css';
-import {notes} from '../const/notes';
+import {fullPiano} from '../const/notes';
 
 export const Key = (props) => {
   const [state, setstate] = useState(props);
@@ -61,9 +61,8 @@ export const Key = (props) => {
       }}
     >
       {
-        (state.octaveID === parseInt(state.lowerNoteAndPitch.slice(-1)) && notes.indexOf(state.name) >= notes.indexOf(state.lowerNoteAndPitch.slice(0, -1))) ||
-        (state.octaveID === parseInt(state.higherNoteAndPitch.slice(-1)) && notes.indexOf(state.name) <= notes.indexOf(state.higherNoteAndPitch.slice(0, -1))) ||
-        (state.octaveID > parseInt(state.lowerNoteAndPitch.slice(-1)) && state.octaveID < parseInt(state.higherNoteAndPitch.slice(-1))) ? // normal colors
+        (fullPiano.indexOf(state.name+state.octaveID) >= fullPiano.indexOf(state.lowerNoteAndPitch)) &&
+        (fullPiano.indexOf(state.name+state.octaveID) <= fullPiano.indexOf(state.higherNoteAndPitch)) ? // normal colors
           state.riddle.length >= 1 && color === 'green' ? // green
             (state.name+state.octaveID).length > 2 ?
               IndividualKey('black2', state.blackWidth, state.blackHeight)

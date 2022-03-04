@@ -32,6 +32,10 @@ export const infoTitle = {
   fontSize: '25px',
 }
 
+export const infoTitle2 = {
+  fontSize: '20px',
+}
+
 export const noteTextVertical = {
   fontSize: '90px',
 }
