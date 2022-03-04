@@ -5,6 +5,8 @@ import {Infos} from './components/Infos';
 import {Settings} from './components/Settings';
 import {DummyImgs} from './components/DummyImgs';
 import {chordTypes} from './const/chords';
+import {loadNotes} from './lib/loadNotes';
+import {fullPiano} from './const/notes';
 
 export default function App() {
   const [riddle, setriddle] = useState([]);
@@ -22,6 +24,7 @@ export default function App() {
   const [settings, setsettings] = useState(false);
   const [whiteHeight] = useState(202/8);
   const [userChords, setuserChords] = useState([]);
+  const [riddleName, setriddleName] = useState('');
 
   useEffect(() => {
     setanswer(manualFinding);
@@ -32,6 +35,10 @@ export default function App() {
       setanswer(true);
     }
   }, [manualChordFinding]);
+
+  useEffect(() => {
+    loadNotes(fullPiano, instrument);
+  }, [instrument]);
 
   useEffect(() => {
     let userChordsTemp;
@@ -162,6 +169,8 @@ export default function App() {
               setmanualChordFinding={(manualChordFinding) => { setmanualChordFinding(manualChordFinding) }}
               riddle={riddle}
               setriddle={(riddle) => setriddle(riddle) }
+              riddleName={riddleName}
+              setriddleName={(riddleName) => setriddleName(riddleName) }
               userChords={userChords}
             />
           </div>

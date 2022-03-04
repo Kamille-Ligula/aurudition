@@ -53,7 +53,7 @@ export const Infos = (props) => {
           <li>Play a random note: As the name implies, it play and lets you guess one single note.
           Though it may look straightforward, this method is actually meant to be used at an
           advanced level to train perfect pitch.</li>
-          <li>Play two random notes: As the name implies, it plays two notes, with the first one appearing on the
+          <li>Play a random sequence: It plays two notes, with the first one appearing on the
           piano keyboard as a hint, and lets you try and guess the second one. This is meant to be used to
           train relative pitch and should be the place to start for beginners.</li>
           <li>Play a random chord. This button, somewhat hidden, is meant to be used at a fairly advanced level, too.

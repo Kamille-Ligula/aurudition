@@ -62,7 +62,7 @@ const chordTypes = [
     name: 'fully diminished',
     short: '°',
     notes: [base, base+3, base+3+3, base+3+3+3],
-    explanation: 'root, minor 3rd, diminished 5th, diminished 11th',
+    explanation: 'root, minor 3rd, diminished 5th, diminished 7th',
   },
   {
     name: 'major 11th',

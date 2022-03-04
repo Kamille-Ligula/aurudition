@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {notes, notesDictionary, octavesDictionary, fullPiano} from '../const/notes';
 import {playRandomNote} from '../lib/playRandomNote';
 import {playNote} from '../lib/playNote';
+import {loadNotes} from '../lib/loadNotes';
 import {chordTypes} from '../const/chords';
 import {getRandomInt} from '../lib/getRandomInt';
 import {playChord} from '../lib/playChord';
@@ -25,7 +26,6 @@ import '../styles/styles.css';
 export const Controls = (props) => {
   const [state, setstate] = useState(props);
   const [notesNaming, setnotesNaming] = useState(localStorage.getItem("notesNaming") || 0);
-  const [riddleName, setriddleName] = useState('');
 
   useEffect(() => {
     setstate(props);
@@ -47,7 +47,7 @@ export const Controls = (props) => {
     props.setmanualChordFinding([false, false, false]);
 
     props.setriddle(randomCombination);
-    setriddleName('');
+    props.setriddleName('');
 
     playNote(randomCombination, state.instrument);
   }
@@ -81,7 +81,7 @@ export const Controls = (props) => {
       if (breakLoop) { break }
     }
 
-    const randomChordName = fullPiano[randomChordBase]+' '+randomChordType.name;
+    const randomChordName = notesDictionary[fullPiano[randomChordBase].slice(0, -1)][notesNaming]+octavesDictionary[fullPiano[randomChordBase][fullPiano[randomChordBase].length-1]]+' '+randomChordType.name;
     const randomChordNotes = [];
     for (let i=0; i<randomChordType.notes.length; i++) {
       randomChordNotes.push(
@@ -94,7 +94,7 @@ export const Controls = (props) => {
     props.setmanualChordFinding([false, false, false]);
 
     props.setriddle(randomChordNotes);
-    setriddleName(randomChordName);
+    props.setriddleName(randomChordName);
 
     playChord(randomChordNotes, state.instrument);
   }
@@ -127,7 +127,7 @@ export const Controls = (props) => {
           }
         </select>
         <span style={isVertical ? textVertical : text}> Range: </span>
-        <select style={isVertical ? selectionButtonVertical : selectionButton} value={state.lowerNoteAndPitch} id="notesList" onChange={(e) => { props.setlowerNoteAndPitch(e.target.value); localStorage.setItem("lowerNoteAndPitch", e.target.value); }}>
+        <select style={isVertical ? selectionButtonVertical : selectionButton} value={state.lowerNoteAndPitch} id="notesList" onChange={(e) => { props.setlowerNoteAndPitch(e.target.value); localStorage.setItem("lowerNoteAndPitch", e.target.value); loadNotes(fullPiano, state.instrument) }}>
           {
             octavesDictionary.map((pitch, pitchIndex) => (
               notes.filter(function(item, index) {
@@ -141,7 +141,7 @@ export const Controls = (props) => {
           }
         </select>
         <span style={isVertical ? textVertical : text}> - </span>
-        <select style={isVertical ? selectionButtonVertical : selectionButton} value={state.higherNoteAndPitch} id="notesList" onChange={(e) => { props.sethigherNoteAndPitch(e.target.value); localStorage.setItem("higherNoteAndPitch", e.target.value); }}>
+        <select style={isVertical ? selectionButtonVertical : selectionButton} value={state.higherNoteAndPitch} id="notesList" onChange={(e) => { props.sethigherNoteAndPitch(e.target.value); localStorage.setItem("higherNoteAndPitch", e.target.value); loadNotes(fullPiano, state.instrument) }}>
           {
             octavesDictionary.map((pitch, pitchIndex) => (
               notes.filter(function(item, index) {
@@ -172,7 +172,7 @@ export const Controls = (props) => {
           :
             <div>
               {isVertical ? <p/> : <span>&nbsp;</span>}<input className='button' type="button" value="Play a random note" style={isVertical ? noteButtonVertical : noteButton} onClick={() => { askForNotes(1) }} />
-              {isVertical ? <p/> : <span>&nbsp;</span>}<input className='button' type="button" value="Play two random notes" style={isVertical ? noteButtonVertical : noteButton} onClick={() => { askForNotes(2) }} />
+              {isVertical ? <p/> : <span>&nbsp;</span>}<input className='button' type="button" value="Play a random interval" style={isVertical ? noteButtonVertical : noteButton} onClick={() => { askForNotes(2) }} />
               {
                 (fullPiano.indexOf(state.higherNoteAndPitch) - fullPiano.indexOf(state.lowerNoteAndPitch) > 18) &&
                   <span>
@@ -207,7 +207,7 @@ export const Controls = (props) => {
                   state.riddle.length >= 3 &&
                     <div style={isVertical ? noteTextVertical : noteText}>
                       <span style={state.manualChordFinding.indexOf(false) === -1 ? manuallyFoundStyle : answerStyle}>
-                        {riddleName}
+                        {state.riddleName}
                       </span>
                     </div>
           :
