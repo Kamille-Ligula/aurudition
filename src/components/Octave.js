@@ -19,13 +19,13 @@ export const Octave = (props) => {
 
     for (let i=0; i<naturalsList.length; i++) {
       notesProt[naturalsList[i]] = {
-        bottom: props.baseBottomPosition,
+        bottom: 0,
         offset: props.whiteWidth*i,
       }
     }
     for (let i=0; i<accidentalsList.length; i++) {
       notesProt[accidentalsList[i]] = {
-        bottom: props.whiteHeight-blackHeight+props.baseBottomPosition,
+        bottom: props.whiteHeight-blackHeight,
         offset: 28/props.divisor*accidentalsMultipliersList[i],
       }
     }
@@ -52,7 +52,6 @@ export const Octave = (props) => {
 
             baseOctavePosition={state.baseOctavePosition}
             octavePositionDiff={state.octavePositionDiff}
-            baseBottomPosition={state.baseBottomPosition}
 
             octaves={state.octaves}
 

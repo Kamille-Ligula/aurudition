@@ -7,6 +7,7 @@ import {DummyImgs} from './components/DummyImgs';
 import {chordTypes} from './const/chords';
 import {loadNotes} from './lib/loadNotes';
 import {fullPiano} from './const/notes';
+import {styles} from './styles/styles.js';
 
 export default function App() {
   const [riddle, setriddle] = useState([]);
@@ -16,7 +17,7 @@ export default function App() {
   const [higherNoteAndPitch, sethigherNoteAndPitch] = useState(localStorage.getItem("higherNoteAndPitch") || 'C4');
   const [divisor, setdivisor] = useState(window.innerWidth/window.innerHeight*8);
   const [manualFinding, setmanualFinding] = useState(false);
-  const [manualChordFinding, setmanualChordFinding] = useState([false, false, false]);
+  const [manualChordFinding, setmanualChordFinding] = useState([false, false, false, false]);
   const [showRedAndGreenKeys, setshowRedAndGreenKeys] = useState(true);
   const [windowWidth, setwindowWidth] = useState(window.innerWidth);
   const [windowHeight, setwindowHeight] = useState(window.innerHeight);
@@ -74,25 +75,8 @@ export default function App() {
     }
   }, []);
 
-  const styles = {
-    topRightButtons: {
-      zIndex: '999',
-      elevation: '999',
-      position: 'fixed',
-      top: '1vh',
-      height: '6vh',
-      width: 'auto',
-    },
-    settingsButton: {
-      right: '1vh',
-    },
-    quitButton: {
-      right: '1vh',
-    },
-    infoButton: {
-      right: '7vh',
-    },
-  }
+  let isVertical: boolean = (windowWidth/windowHeight < 1);
+  let isMobile: boolean = (windowWidth <= 1000);
 
   return (
     <div className='noselect'>
@@ -104,7 +88,9 @@ export default function App() {
               src='/aurudition/img/icons/quit.png'
               style={{
                 ...styles.topRightButtons,
-                ...styles.quitButton
+                height: isMobile ? isVertical? '5vh' : '5vw' : '3vw',
+                width: 'auto',
+                right: isMobile ? isVertical? '1vh' : '1vw' : '0.5vw',
               }}
               onClick={() => { setinfos(false); setsettings(false); }}
             />
@@ -136,7 +122,9 @@ export default function App() {
               src='/aurudition/img/icons/info.png'
               style={{
                 ...styles.topRightButtons,
-                ...styles.infoButton
+                height: isMobile ? isVertical? '5vh' : '5vw' : '3vw',
+                width: 'auto',
+                right: isMobile ? isVertical? '6vh' : '6vw' : '3.5vw',
               }}
               onClick={() => setinfos(true) }
             />
@@ -145,7 +133,9 @@ export default function App() {
               src='/aurudition/img/icons/settings.png'
               style={{
                 ...styles.topRightButtons,
-                ...styles.settingsButton
+                height: isMobile ? isVertical? '5vh' : '5vw' : '3vw',
+                width: 'auto',
+                right: isMobile ? isVertical? '1vh' : '1vw' : '0.5vw',
               }}
               onClick={() => setsettings(true) }
             />
@@ -154,7 +144,6 @@ export default function App() {
               whiteHeight={whiteHeight}
               windowWidth={windowWidth}
               windowHeight={windowHeight}
-              divisor={divisor}
               instrument={instrument}
               setinstrument={(instrument) => setinstrument(instrument) }
               lowerNoteAndPitch={lowerNoteAndPitch}
@@ -188,7 +177,7 @@ export default function App() {
         setmanualFinding={(manualFinding) => setmanualFinding(manualFinding) }
         setmanualChordFinding={(callback) => {
           const manualChordFindingTemp = [...manualChordFinding];
-          manualChordFindingTemp[callback.indexOf(true)] = true;
+          manualChordFindingTemp[callback] = true;
           setmanualChordFinding(manualChordFindingTemp);
         }}
       />

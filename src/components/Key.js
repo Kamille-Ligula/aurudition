@@ -41,19 +41,15 @@ export const Key = (props) => {
             }
           }
           else {
-            if (state.name+state.octaveID === state.riddle[0]) {
-              setcolor('green');
-              props.setmanualChordFinding([true, false, false]);
+            const temp = Array(state.riddle.length).fill(false);
+            for (let i=0; i<state.riddle.length; i++) {
+              if (state.name+state.octaveID === state.riddle[i]) {
+                setcolor('green');
+                temp[i] = true;
+                props.setmanualChordFinding(i);
+              }
             }
-            else if (state.name+state.octaveID === state.riddle[1]) {
-              setcolor('green')
-              props.setmanualChordFinding([false, true, false]);
-            }
-            else if (state.name+state.octaveID === state.riddle[2]) {
-              setcolor('green')
-              props.setmanualChordFinding([false, false, true]);
-            }
-            else if (!state.answer) {
+            if (!state.answer && temp.indexOf(true) === -1) {
               setcolor('red')
             }
           }
@@ -95,14 +91,14 @@ export const Key = (props) => {
                   :
                     IndividualKey('white', state.whiteWidth, state.whiteHeight)
         :
-          <div>
+          <span>
             {
               (state.name+state.octaveID).length > 2 ? // grey
                 IndividualKey('black6', state.blackWidth, state.blackHeight)
               :
                 IndividualKey('white6', state.whiteWidth, state.whiteHeight)
             }
-          </div>
+          </span>
       }
     </span>
   )

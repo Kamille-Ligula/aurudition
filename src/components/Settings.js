@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {chordTypes} from '../const/chords';
-import {
-  infoTitle,
-} from '../styles/styles.js';
+import {styles} from '../styles/styles.js';
 import '../styles/styles.css';
 
 export const Settings = (props) => {
@@ -43,22 +41,24 @@ export const Settings = (props) => {
     localStorage.setItem("showRedAndGreenKeys", e.target.checked);
   };
 
+  let isVertical: boolean = (state.windowWidth/state.windowHeight < 1);
+
   return (
-    <div className='innerWindow infosAndSettings' style={{height: 78-state.whiteHeight+'vh'}}>
+    <div className='innerWindow infosAndSettings' style={{top: '6vh', height: 78-state.whiteHeight+'vh'}}>
       {/* Color keys Option */}
-      <span style={infoTitle}>
+      <span style={styles.infoTitle}>
         Key colors:
       </span>
       <div>
         <label>
-          <input type="checkbox" className="checkbox" id="colorKeys" onClick={handleColorKeysChange} /> Color wrong keys in red and right keys in green (highly recommended for chord tests)
+          <input type="checkbox" style={{transform: isVertical ? 'scale(1.5)' : 'scale(1)' }} className="checkbox" id="colorKeys" onClick={handleColorKeysChange} /> Color wrong keys in red and right keys in green (highly recommended for chord tests)
         </label>
       </div>
 
       <p/>
 
       {/* Chords */}
-      <span style={infoTitle}>
+      <span style={styles.infoTitle}>
         Chords:
       </span>
       <div>
@@ -69,6 +69,7 @@ export const Settings = (props) => {
                 key <= 3 ?
                   <input
                     type="checkbox"
+                    style={{transform: isVertical ? 'scale(1.5)' : 'scale(1)' }}
                     id={"userChords"+key}
                     checked
                     disabled
@@ -77,6 +78,7 @@ export const Settings = (props) => {
                 :
                   <input
                     type="checkbox"
+                    style={{transform: isVertical ? 'scale(1.5)' : 'scale(1)' }}
                     id={"userChords"+key}
                     onClick={(e) => handleChange(e, key)}
                   />
