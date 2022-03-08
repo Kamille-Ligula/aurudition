@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
+import MIDISounds from 'midi-sounds-react';
 import {Piano} from './components/Piano';
 import {Controls} from './components/Controls';
 import {Infos} from './components/Infos';
 import {Settings} from './components/Settings';
 import {DummyImgs} from './components/DummyImgs';
 import {chordTypes} from './const/chords';
-import {loadNotes} from './lib/loadNotes';
 import {fullPiano} from './const/notes';
+import {wait} from './lib/wait';
 import {styles} from './styles/styles.js';
 
 export default function App() {
   const [riddle, setriddle] = useState([]);
-  const [instrument, setinstrument] = useState(localStorage.getItem("instrument") || 'acoustic_grand_piano-mp3');
+  const [instrument, setinstrument] = useState(localStorage.getItem("instrumentID") || 3);
   const [answer, setanswer] = useState(false);
   const [lowerNoteAndPitch, setlowerNoteAndPitch] = useState(localStorage.getItem("lowerNoteAndPitch") || 'C3');
   const [higherNoteAndPitch, sethigherNoteAndPitch] = useState(localStorage.getItem("higherNoteAndPitch") || 'C4');
@@ -26,6 +27,38 @@ export default function App() {
   const [whiteHeight] = useState(202/8);
   const [userChords, setuserChords] = useState([]);
   const [riddleName, setriddleName] = useState('');
+  const [instrumentsItemsList, setinstrumentsItemsList] = useState([]);
+
+  async function playNote(which, instrument) {
+    for (let i=0; i<which.length; i++) {
+      MIDISounds.midiSounds.playChordAt(0, instrument, [21+fullPiano.indexOf(which[i])], 2.5);
+      await wait(1000*0.6);
+    }
+  }
+
+  async function playChord(which, instrument) {
+    for (let i=0; i<which.length; i++) {
+      MIDISounds.midiSounds.playChordAt(0, instrument, [21+fullPiano.indexOf(which[i])], 2.5);
+    }
+  }
+
+  useEffect(() => {
+    MIDISounds.midiSounds.cacheInstrument(instrument);
+
+    const items = [];
+    if (MIDISounds.midiSounds) {
+      if (items.length === 0) {
+        for (let i=0; i<MIDISounds.midiSounds.player.loader.instrumentKeys().length; i++) {
+          items.push(
+            <option key={i} value={i} >
+              {'' + (i + 0) + '. ' + MIDISounds.midiSounds.player.loader.instrumentInfo(i).title}
+            </option>
+          );
+        }
+        setinstrumentsItemsList(items);
+      }
+    }
+  }, [instrument]);
 
   useEffect(() => {
     setanswer(manualFinding);
@@ -36,10 +69,6 @@ export default function App() {
       setanswer(true);
     }
   }, [manualChordFinding]);
-
-  useEffect(() => {
-    loadNotes(fullPiano, instrument);
-  }, [instrument]);
 
   useEffect(() => {
     let userChordsTemp;
@@ -60,6 +89,11 @@ export default function App() {
     }
 
     setuserChords(userChordsTemp);
+
+    window.addEventListener('resize', handleWindowSizeChange);
+    return () => {
+      window.removeEventListener('resize', handleWindowSizeChange);
+    }
   }, []);
 
   function handleWindowSizeChange() {
@@ -67,13 +101,6 @@ export default function App() {
     setwindowHeight(window.innerHeight);
     setdivisor(window.innerWidth/window.innerHeight*8);
   }
-
-  useEffect(() => {
-    window.addEventListener('resize', handleWindowSizeChange);
-    return () => {
-      window.removeEventListener('resize', handleWindowSizeChange);
-    }
-  }, []);
 
   let isVertical: boolean = (windowWidth/windowHeight < 1);
   let isMobile: boolean = (windowWidth <= 1000);
@@ -161,6 +188,10 @@ export default function App() {
               riddleName={riddleName}
               setriddleName={(riddleName) => setriddleName(riddleName) }
               userChords={userChords}
+              setmidiNotePlaying={(midiNotePlaying) => playNote(midiNotePlaying, instrument) }
+              setmidiChordPlaying={(midiChordPlaying) => playChord(midiChordPlaying, instrument) }
+              instrumentsItemsList={instrumentsItemsList}
+              setinstrumentsItemsList={(instrumentsItemsList) => setinstrumentsItemsList(instrumentsItemsList) }
             />
           </div>
       }
@@ -180,9 +211,24 @@ export default function App() {
           manualChordFindingTemp[callback] = true;
           setmanualChordFinding(manualChordFindingTemp);
         }}
+        setmidiNotePlaying={(midiNotePlaying) => playNote(midiNotePlaying, instrument) }
       />
 
       <DummyImgs />
+
+      <div style={{
+        position:'fixed',
+        /*top:'0vh',
+        left:'1vw',*/
+        bottom:'-100vh',
+        right:'-100vw',
+      }}>
+        <MIDISounds
+          ref={(ref) => (MIDISounds.midiSounds = ref)}
+          appElementName="root"
+          instruments={[3]}
+        />
+      </div>
     </div>
   );
 }

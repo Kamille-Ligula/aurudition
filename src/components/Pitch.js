@@ -6,30 +6,38 @@ export const Pitch = (props) => {
   const [barHeight] = useState(38/8);
   const [barWidth, setbarWidth] = useState(337/props.divisor);
 
+  const borderWidth = 0.1;
+
   useEffect(() => {
     setstate(props);
     setbarWidth(336/props.divisor);
   }, [props]);
 
   const pitches = {
-    bottom: state.whiteHeight,
+    bottom: state.whiteHeight+state.keysOffsetBottom,
   }
 
-  return(
-    <span style={{
-      left: ((state.id*barWidth)-((barWidth/7)*5.25))+'vw',
-      position: 'absolute',
-      bottom: pitches.bottom+'vh',
-    }}>
-      <img
-        className="pitchimg"
-        src={'/aurudition/img/pitch'+state.id+'.png'}
-        alt={''}
-        style={{
-          width: barWidth+'vw',
-          height: barHeight+'vh',
-        }}
-      />
+  return (
+    <span
+      className="pitchimg"
+      alt={''}
+      style={{
+        backgroundColor: '#ffffff',
+        width: (barWidth-borderWidth*2)+'vw',
+        height: barHeight+'vh',
+        borderStyle: 'solid',
+        borderWidth: borderWidth+'vw',
+        borderColor: '#000000',
+
+        left: ((state.id*barWidth)-((barWidth/7)*5.25))+'vw',
+        position: 'absolute',
+        bottom: pitches.bottom+'vh',
+
+        textAlign: 'center',
+        fontSize: (barHeight-borderWidth*2)+'vh',
+      }}
+    >
+      {state.id}
     </span>
   )
 }

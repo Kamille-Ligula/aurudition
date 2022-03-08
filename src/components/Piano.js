@@ -9,6 +9,7 @@ export const Piano = (props) => {
   const [baseOctavePosition, setbaseOctavePosition] = useState();
   const [octavePositionDiff, setoctavePositionDiff] = useState();
   const [octaves, setoctaves] = useState([]);
+  const [keysOffsetBottom] = useState(0.5);
 
   useEffect(() => {
     setstate(props);
@@ -53,12 +54,14 @@ export const Piano = (props) => {
               key={key}
               divisor={state.divisor}
               whiteHeight={state.whiteHeight}
+              keysOffsetBottom={keysOffsetBottom}
             />
 
             <Octave
               id={index}
               instrument={state.instrument}
               divisor={state.divisor}
+              keysOffsetBottom={keysOffsetBottom}
 
               whiteWidth={whiteWidth}
               whiteHeight={state.whiteHeight}
@@ -77,6 +80,9 @@ export const Piano = (props) => {
               }
               setmanualChordFinding={(manualChordFinding) =>
                 props.setmanualChordFinding(manualChordFinding)
+              }
+              setmidiNotePlaying={(midiNotePlaying) =>
+                props.setmidiNotePlaying(midiNotePlaying)
               }
             />
           </div>

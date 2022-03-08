@@ -19,13 +19,13 @@ export const Octave = (props) => {
 
     for (let i=0; i<naturalsList.length; i++) {
       notesProt[naturalsList[i]] = {
-        bottom: 0,
+        bottom: 0+props.keysOffsetBottom,
         offset: props.whiteWidth*i,
       }
     }
     for (let i=0; i<accidentalsList.length; i++) {
       notesProt[accidentalsList[i]] = {
-        bottom: props.whiteHeight-blackHeight,
+        bottom: props.whiteHeight-blackHeight+props.keysOffsetBottom,
         offset: 28/props.divisor*accidentalsMultipliersList[i],
       }
     }
@@ -66,6 +66,9 @@ export const Octave = (props) => {
             }
             setmanualChordFinding={(manualChordFinding) =>
               props.setmanualChordFinding(manualChordFinding)
+            }
+            setmidiNotePlaying={(midiNotePlaying) =>
+              props.setmidiNotePlaying(midiNotePlaying)
             }
           />
         )
