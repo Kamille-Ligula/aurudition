@@ -5,27 +5,20 @@ import '../styles/styles.css';
 
 export const Settings = (props) => {
   const [state, setstate] = useState(props);
+  const [defaultCheck, setdefaultCheck] = useState([]);
 
   useEffect(() => {
     setstate(props);
 
+    const defaultCheckTemp = [false, false, false];
+    defaultCheckTemp[props.notesNaming] = true;
+    setdefaultCheck(defaultCheckTemp);
+
     for (let i=0; i<props.userChords.length; i++) {
-      if (props.userChords[i]) {
-        document.getElementById("userChords"+i).defaultChecked = true;
-      }
-      else {
-        document.getElementById("userChords"+i).defaultChecked = false;
-      }
+      document.getElementById("userChords"+i).defaultChecked = props.userChords[i];
     }
 
-    if (localStorage.getItem("showRedAndGreenKeys") === 'false') {
-      document.getElementById("colorKeys").defaultChecked = false;
-      props.setshowRedAndGreenKeys(false);
-    }
-    else {
-      document.getElementById("colorKeys").defaultChecked = true;
-      props.setshowRedAndGreenKeys(true);
-    }
+    document.getElementById("colorKeys").defaultChecked = props.showRedAndGreenKeys;
   }, [props]);
 
   const handleChange = (e, key) => {
@@ -41,17 +34,75 @@ export const Settings = (props) => {
     localStorage.setItem("showRedAndGreenKeys", e.target.checked);
   };
 
+  function pickInstrument(e) {
+    props.setinstrument(e);
+    localStorage.setItem("instrumentID", e);
+  }
+
   let isVertical: boolean = (state.windowWidth/state.windowHeight < 1);
 
+  function onChangeValue(e) {
+    props.setnotesNaming(e.target.value);
+    localStorage.setItem("notesNaming", e.target.value);
+  }
+
   return (
-    <div className='innerWindow infosAndSettings' style={{top: '6vh', height: 78-state.whiteHeight+'vh'}}>
+    <div
+    className='innerWindow infosAndSettings'
+    style=
+      {{
+        top: (state.windowHeight*0.06)+'px',
+        height: (state.windowHeight*0.55)+'px'
+      }}
+    >
+      <div>
+        {/* Notes naming convention */}
+        <span style={styles.infoTitle}>
+          Notation:
+        </span>
+        <div>
+          <div style={{fontSize: isVertical ? '36px' : '' }} onChange={onChangeValue}>
+            <input className={isVertical ? 'vertical' : 'horizontal'} type="radio" value={0} defaultChecked={defaultCheck[0]} name="notation" /> English (C, D, E, F, G, A, B)<br/>
+            <input className={isVertical ? 'vertical' : 'horizontal'} type="radio" value={1} defaultChecked={defaultCheck[1]} name="notation" /> German (C, D, E, F, G, A, H)<br/>
+            <input className={isVertical ? 'vertical' : 'horizontal'} type="radio" value={2} defaultChecked={defaultCheck[2]} name="notation" /> Italian (do, re, mi, fa, sol, la, si)
+          </div>
+        </div>
+
+        <p/>
+
+        <span style={styles.infoTitle}>
+          Instrument:
+        </span>
+        {/* Instrument */}
+        <div>
+          <select
+            style={isVertical ? styles.selectionButtonVerticalInSettings : styles.selectionButtonInSettings}
+            value={state.instrument}
+            id="instrumentsList"
+            onChange={(e) => { pickInstrument(e.target.value) }}
+          >
+            {
+              state.instrumentsItemsList
+            }
+          </select>
+        </div>
+      </div>
+
+      <p/>
+
       {/* Color keys Option */}
       <span style={styles.infoTitle}>
         Key colors:
       </span>
       <div>
         <label>
-          <input type="checkbox" style={{transform: isVertical ? 'scale(1.5)' : 'scale(1)' }} className="checkbox" id="colorKeys" onClick={handleColorKeysChange} /> Color wrong keys in red and right keys in green (highly recommended for chord tests)
+          <input
+            type="checkbox"
+            style={{transform: isVertical ? 'scale(1.5)' : 'scale(1)' }}
+            id="colorKeys"
+            onClick={(e) => handleColorKeysChange(e)}
+          />
+          &nbsp;Color wrong keys in red and right keys in green (highly recommended for chord tests)
         </label>
       </div>
 
@@ -61,7 +112,8 @@ export const Settings = (props) => {
       <span style={styles.infoTitle}>
         Chords:
       </span>
-      <div>
+      <br/>Note: practicing recognizing chords requires a 20-semitone range configuration or larger.
+      <div style={{textAlign: 'left'}}>
         {
           chordTypes.map((item, key) => (
             <label key={key+item}>
@@ -83,7 +135,7 @@ export const Settings = (props) => {
                     onClick={(e) => handleChange(e, key)}
                   />
               }
-              &nbsp;{item.name} ({item.explanation})
+              &nbsp;<span style={{fontWeight: 'bold'}}>{item.name}</span> ({item.explanation})
               <br/>
             </label>
           ))

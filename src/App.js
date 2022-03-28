@@ -24,41 +24,45 @@ export default function App() {
   const [windowHeight, setwindowHeight] = useState(window.innerHeight);
   const [infos, setinfos] = useState(false);
   const [settings, setsettings] = useState(false);
-  const [whiteHeight] = useState(202/8);
+  const [whiteHeight, setwhiteHeight] = useState(window.innerHeight/4);
   const [userChords, setuserChords] = useState([]);
   const [riddleName, setriddleName] = useState('');
   const [instrumentsItemsList, setinstrumentsItemsList] = useState([]);
+  const [notesNaming, setnotesNaming] = useState(localStorage.getItem("notesNaming") || 0);
 
   async function playNote(which, instrument) {
     for (let i=0; i<which.length; i++) {
-      MIDISounds.midiSounds.playChordAt(0, instrument, [21+fullPiano.indexOf(which[i])], 2.5);
+      MIDISounds.midiSounds.playChordAt(0, instrument, [21+fullPiano.indexOf(which[i])], 1.5);
       await wait(1000*0.6);
     }
   }
 
   async function playChord(which, instrument) {
     for (let i=0; i<which.length; i++) {
-      MIDISounds.midiSounds.playChordAt(0, instrument, [21+fullPiano.indexOf(which[i])], 2.5);
+      MIDISounds.midiSounds.playChordAt(0, instrument, [21+fullPiano.indexOf(which[i])], 1.5);
     }
   }
 
   useEffect(() => {
     MIDISounds.midiSounds.cacheInstrument(instrument);
+  }, [instrument]);
 
-    const items = [];
+  useEffect(() => {
+    const items = [...instrumentsItemsList];
     if (MIDISounds.midiSounds) {
       if (items.length === 0) {
         for (let i=0; i<MIDISounds.midiSounds.player.loader.instrumentKeys().length; i++) {
+          const instrumentTitle = MIDISounds.midiSounds.player.loader.instrumentInfo(i).title;
           items.push(
             <option key={i} value={i} >
-              {'' + (i + 0) + '. ' + MIDISounds.midiSounds.player.loader.instrumentInfo(i).title}
+              {'' + i + '. ' + instrumentTitle.substring(0, instrumentTitle.indexOf(':'))}
             </option>
           );
         }
         setinstrumentsItemsList(items);
       }
     }
-  }, [instrument]);
+  }, [instrumentsItemsList]);
 
   useEffect(() => {
     setanswer(manualFinding);
@@ -90,6 +94,13 @@ export default function App() {
 
     setuserChords(userChordsTemp);
 
+    if (localStorage.getItem("showRedAndGreenKeys") === 'true') {
+      setshowRedAndGreenKeys(true);
+    }
+    else {
+      setshowRedAndGreenKeys(false);
+    }
+
     window.addEventListener('resize', handleWindowSizeChange);
     return () => {
       window.removeEventListener('resize', handleWindowSizeChange);
@@ -100,6 +111,7 @@ export default function App() {
     setwindowWidth(window.innerWidth);
     setwindowHeight(window.innerHeight);
     setdivisor(window.innerWidth/window.innerHeight*8);
+    setwhiteHeight(window.innerHeight/4);
   }
 
   let isVertical: boolean = (windowWidth/windowHeight < 1);
@@ -107,6 +119,11 @@ export default function App() {
 
   return (
     <div className='noselect'>
+      <img
+        alt='logo'
+        style={{opacity: '0.4', position: 'fixed', top: (window.innerHeight*0.01)+'px', left: '1vw', height: (window.innerHeight*0.04)+'px', width: 'auto'}}
+        src='/aurudition/img/logo.png'
+      />
       {
         settings || infos ?
           <div>
@@ -115,9 +132,9 @@ export default function App() {
               src='/aurudition/img/icons/quit.png'
               style={{
                 ...styles.topRightButtons,
-                height: isMobile ? isVertical? '5vh' : '5vw' : '3vw',
+                height: isMobile ? isVertical? (window.innerHeight*0.05)+'px' : '5vw' : '3vw',
                 width: 'auto',
-                right: isMobile ? isVertical? '1vh' : '1vw' : '0.5vw',
+                right: isMobile ? isVertical? (window.innerHeight*0.01)+'px' : '1vw' : '0.5vw',
               }}
               onClick={() => { setinfos(false); setsettings(false); }}
             />
@@ -131,6 +148,12 @@ export default function App() {
                   setuserChords={(userChords) => setuserChords(userChords) }
                   showRedAndGreenKeys={showRedAndGreenKeys}
                   setshowRedAndGreenKeys={(showRedAndGreenKeys) => setshowRedAndGreenKeys(showRedAndGreenKeys) }
+                  instrumentsItemsList={instrumentsItemsList}
+                  setinstrumentsItemsList={(instrumentsItemsList) => setinstrumentsItemsList(instrumentsItemsList) }
+                  instrument={instrument}
+                  setinstrument={(instrument) => setinstrument(instrument) }
+                  notesNaming={notesNaming}
+                  setnotesNaming={(notesNaming) => setnotesNaming(notesNaming) }
                 />
               :
                 infos ?
@@ -149,9 +172,9 @@ export default function App() {
               src='/aurudition/img/icons/info.png'
               style={{
                 ...styles.topRightButtons,
-                height: isMobile ? isVertical? '5vh' : '5vw' : '3vw',
+                height: isMobile ? isVertical? (window.innerHeight*0.05)+'px' : '5vw' : '3vw',
                 width: 'auto',
-                right: isMobile ? isVertical? '6vh' : '6vw' : '3.5vw',
+                right: isMobile ? isVertical? (window.innerHeight*0.06)+'px' : '6vw' : '3.5vw',
               }}
               onClick={() => setinfos(true) }
             />
@@ -160,9 +183,9 @@ export default function App() {
               src='/aurudition/img/icons/settings.png'
               style={{
                 ...styles.topRightButtons,
-                height: isMobile ? isVertical? '5vh' : '5vw' : '3vw',
+                height: isMobile ? isVertical? (window.innerHeight*0.05)+'px' : '5vw' : '3vw',
                 width: 'auto',
-                right: isMobile ? isVertical? '1vh' : '1vw' : '0.5vw',
+                right: isMobile ? isVertical? (window.innerHeight*0.01)+'px' : '1vw' : '0.5vw',
               }}
               onClick={() => setsettings(true) }
             />
@@ -192,6 +215,7 @@ export default function App() {
               setmidiChordPlaying={(midiChordPlaying) => playChord(midiChordPlaying, instrument) }
               instrumentsItemsList={instrumentsItemsList}
               setinstrumentsItemsList={(instrumentsItemsList) => setinstrumentsItemsList(instrumentsItemsList) }
+              notesNaming={notesNaming}
             />
           </div>
       }
@@ -205,6 +229,7 @@ export default function App() {
         lowerNoteAndPitch={lowerNoteAndPitch}
         higherNoteAndPitch={higherNoteAndPitch}
         whiteHeight={whiteHeight}
+        windowHeight={windowHeight}
         setmanualFinding={(manualFinding) => setmanualFinding(manualFinding) }
         setmanualChordFinding={(callback) => {
           const manualChordFindingTemp = [...manualChordFinding];
@@ -218,10 +243,8 @@ export default function App() {
 
       <div style={{
         position:'fixed',
-        /*top:'0vh',
-        left:'1vw',*/
-        bottom:'-100vh',
-        right:'-100vw',
+        bottom: '-100vh',
+        right: '-100vw',
       }}>
         <MIDISounds
           ref={(ref) => (MIDISounds.midiSounds = ref)}

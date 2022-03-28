@@ -8,7 +8,7 @@ export function KeyIMG(color, width, height) {
       style={{
         backgroundColor: color,
         width: (width-borderWidth*2)+'vw',
-        height: height+'vh',
+        height: height+'px',
         borderStyle: 'solid',
         borderWidth: borderWidth+'vw',
         borderColor: '#000000',

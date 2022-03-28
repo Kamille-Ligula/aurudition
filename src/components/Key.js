@@ -25,7 +25,7 @@ export const Key = (props) => {
       style={{
         left: state.octaves[state.octaveID]+state.offset+'vw',
         position: 'absolute',
-        bottom: state.bottom+'vh',
+        bottom: state.bottom+'px',
       }}
       onClick={() => {
         props.setmidiNotePlaying([state.name+state.octaveID]);

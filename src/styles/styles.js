@@ -13,21 +13,35 @@ export const styles = {
   noteButtonVertical: {
     marginTop: '1%',
     padding: '3%',
-    fontSize: '60px',
+    fontSize: '66px',
   },
   infoTitle: {
     fontSize: '25px',
+    fontWeight: 'bold',
   },
   infoTitle2: {
     fontSize: '20px',
+    textDecoration: 'underline',
   },
   selectionButtonVertical: {
     marginTop: '1%',
     minWidth: '4%',
     minHeight: '35px',
-    fontSize: '90px',
+    fontSize: '66px',
   },
   selectionButton: {
+    marginTop: '1%',
+    minWidth: '4%',
+    minHeight: '35px',
+    fontSize: '26px',
+  },
+  selectionButtonVerticalInSettings: {
+    marginTop: '1%',
+    minWidth: '4%',
+    minHeight: '35px',
+    fontSize: '52px',
+  },
+  selectionButtonInSettings: {
     marginTop: '1%',
     minWidth: '4%',
     minHeight: '35px',

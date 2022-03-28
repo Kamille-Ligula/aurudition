@@ -9,7 +9,14 @@ export const Infos = (props) => {
   }, [props]);
 
   return (
-    <div className='innerWindow infosAndSettings' style={{top: '6vh', height: 78-state.whiteHeight+'vh'}}>
+    <div
+    className='innerWindow infosAndSettings'
+    style=
+      {{
+        top: (state.windowHeight*0.06)+'px',
+        height: (state.windowHeight*0.55)+'px'
+      }}
+    >
       <span style={styles.infoTitle}>Key colors: </span>
       <br/>The piano keys may be colored in different ways in order to convey different meanings.
       <ul>
@@ -24,24 +31,8 @@ export const Infos = (props) => {
       </ul>
 
       <p/>
-      <span style={styles.infoTitle}>Notation systems:</span>
-      <br/>(The default being the English system, it is also the one I'm using in this section):
-      <ul>
-        <li>English (C, D, E, F, G, A, B)</li>
-        <li>German (C, D, E, F, G, A, H)</li>
-        <li>Italian (do, re, mi, fa, sol, la, si)</li>
-      </ul>
-
-      <p/>
-      <span style={styles.infoTitle}>Instruments:</span>
-      <br/>Many choices of instruments and sounds are available, thanks to the library made available by Benjamin
-      Gleitzman here: <a href='https://github.com/gleitz/midi-js-soundfonts/tree/gh-pages/FluidR3_GM'>
-      https://github.com/gleitz/midi-js-soundfonts/tree/gh-pages/FluidR3_GM</a>.
-
-      <p/>
       <span style={styles.infoTitle}>Range:</span>
       <br/>The maximum range based on which the algorithm will randomly pick notes and chords depending on your requests.
-      Practicing recognizing chords requires a 20-semitone range configuration or larger.
 
       <p/>
       <span style={styles.infoTitle}>Buttons:</span>
@@ -69,7 +60,9 @@ export const Infos = (props) => {
 
       <p/>
       <span style={styles.infoTitle}>Settings:</span>
-      <br/><span style={styles.infoTitle2}>Color right and wrong answers:</span>
+      <p/><span style={styles.infoTitle2}>Instruments:</span>
+      <br/>Above a thousand types of instrument sounds can be chosen thanks to the <a target="_blank" href='https://www.npmjs.com/package/webaudiofont'>WebAudioFont MIDI library</a>.
+      <p/><span style={styles.infoTitle2}>Color right and wrong answers:</span>
       <br/>A setting that allows the algorithm to indicate whether the keys you tried to click
       do not correspond to the note(s) you are looking for, in which case they will be colored red, or whether
       they correspond, in which case they'll be colored green and the algorithm will automatically consider that
@@ -81,7 +74,7 @@ export const Infos = (props) => {
       major 7th, dominant 7th, minor 7th, and major 9th to the list. The remaining six (half diminished,
       fully diminished, major 11th, major ♯11th, suspended 2, suspended 4) being there for true fearless Spartans.
 
-      <p style={{textAlign: 'center'}}>Aurudition © Samuel LUC, 2022 - <a href='https://github.com/Kamille-Ligula/aurudition'>https://github.com/Kamille-Ligula/aurudition</a></p>
+      <p style={{textAlign: 'center'}}>Aurudition © Samuel LUC, 2022 - <a target="_blank" href='https://github.com/Kamille-Ligula/aurudition'>https://github.com/Kamille-Ligula/aurudition</a></p>
     </div>
   )
 }

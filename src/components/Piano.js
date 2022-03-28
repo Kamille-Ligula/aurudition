@@ -54,6 +54,7 @@ export const Piano = (props) => {
               key={key}
               divisor={state.divisor}
               whiteHeight={state.whiteHeight}
+              windowHeight={state.windowHeight}
               keysOffsetBottom={keysOffsetBottom}
             />
 
@@ -65,6 +66,7 @@ export const Piano = (props) => {
 
               whiteWidth={whiteWidth}
               whiteHeight={state.whiteHeight}
+              windowHeight={state.windowHeight}
               baseOctavePosition={baseOctavePosition}
               octavePositionDiff={octavePositionDiff}
               octaves={octaves}

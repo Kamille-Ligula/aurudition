@@ -13,7 +13,7 @@ export const DummyImgs = () => {
       { list.map((key, index) => (
           <img
             className='dummyImgs'
-            alt='dummy'
+            alt='dImg'
             key={key+'dummy'}
             src={'/aurudition/img/'+key}
           />

@@ -55,7 +55,6 @@ img {
 .functionnalButtons {
   text-align: center;
   width: 100%;
-  top: 6vh;
 }
 
 .infosAndSettings {
@@ -139,6 +138,11 @@ a:active {
   height: 1px;
   width: 1px;
   position: fixed;
-  bottom: -100px;
-  right: -100px;
+  bottom: -100vh;
+  right: -100vw;
+}
+
+input[type="radio"].vertical{
+  width: 36px;
+  height: 36px;
 }

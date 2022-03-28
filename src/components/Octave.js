@@ -4,13 +4,14 @@ import '../styles/styles.css';
 
 export const Octave = (props) => {
   const [state, setstate] = useState(props);
-  const [blackHeight] = useState(118/8);
+  const [blackHeight, setblackHeight] = useState(props.windowHeight/7);
   const [blackWidth, setblackWidth] = useState();
   const [notes, setnotes] = useState({});
 
   useEffect(() => {
     setstate(props);
-    setblackWidth(28/props.divisor)
+    setblackWidth(28/props.divisor);
+    setblackHeight(props.windowHeight/7);
 
     const notesProt = {};
     const naturalsList = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];

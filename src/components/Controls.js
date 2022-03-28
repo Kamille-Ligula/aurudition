@@ -8,7 +8,6 @@ import '../styles/styles.css';
 
 export const Controls = (props) => {
   const [state, setstate] = useState(props);
-  const [notesNaming, setnotesNaming] = useState(localStorage.getItem("notesNaming") || 0);
 
   useEffect(() => {
     setstate(props);
@@ -63,7 +62,7 @@ export const Controls = (props) => {
       }
     }
 
-    const randomChordName = notesDictionary[fullPiano[randomChordBase].slice(0, -1)][notesNaming]+octavesDictionary[fullPiano[randomChordBase][fullPiano[randomChordBase].length-1]]+' '+randomChordType.name;
+    const randomChordName = notesDictionary[fullPiano[randomChordBase].slice(0, -1)][state.notesNaming]+octavesDictionary[fullPiano[randomChordBase][fullPiano[randomChordBase].length-1]]+' '+randomChordType.name;
     const randomChordNotes = [];
     for (let i=0; i<randomChordType.notes.length; i++) {
       randomChordNotes.push(
@@ -80,11 +79,7 @@ export const Controls = (props) => {
   }
 
   let isVertical: boolean = (state.windowWidth/state.windowHeight < 1);
-
-  function pickInstrument(e) {
-    props.setinstrument(e);
-    localStorage.setItem("instrumentID", e);
-  }
+  let isMobile: boolean = (state.windowWidth <= 1000);
 
   function onLowerNoteAndPitchChange(e) {
     props.setlowerNoteAndPitch(e.target.value);
@@ -97,55 +92,36 @@ export const Controls = (props) => {
   }
 
   return (
-    <div className='innerWindow functionnalButtons' style={{top: '6vh', height: 78-state.whiteHeight+'vh'}}>
-      {/* Notes naming convention */}
-      <select style={isVertical ? styles.selectionButtonVertical : styles.selectionButton} value={notesNaming} id="conventionsList" onChange={(e) => { setnotesNaming(e); localStorage.setItem("notesNaming", e.target.value); }}>
+    <div className='innerWindow functionnalButtons' style={isVertical ? {top: (state.windowHeight*0.15)+'px', height: (state.windowHeight*0.6)+'px'} : isMobile ? {top: (state.windowHeight*0.07)+'px', height: (state.windowHeight*0.6)+'px'} : {top: (state.windowHeight*0.2)+'px', height: (state.windowHeight*0.6)+'px'}}>
+      {/* Range */}
+      <span style={isVertical ? styles.textVertical : styles.text}> Range: </span>
+      <select style={isVertical ? styles.selectionButtonVertical : styles.selectionButton} value={state.lowerNoteAndPitch} id="notesList" onChange={(e) => { onLowerNoteAndPitchChange(e) }}>
         {
-          ['English notation', 'German notation', 'Italian notation'].map((convention, conventionIndex) => (
-            <option key={convention+conventionIndex} value={conventionIndex}>{convention}</option>
+          octavesDictionary.map((pitch, pitchIndex) => (
+            notes.filter(function(item, index) {
+              if ((pitchIndex!==0 || item==='A' || item==='Bb' || item==='B') &&
+              (fullPiano.indexOf(item+pitchIndex) < fullPiano.indexOf(state.higherNoteAndPitch))) { return true }
+              else { return false }
+            }).map((note) => (
+              <option key={note+pitchIndex} value={note+pitchIndex}>{notesDictionary[note][state.notesNaming]+pitch}</option>
+            ))
           ))
         }
       </select>
-
-      {/* Instrument and range */}
-      <div>
-        <select style={isVertical ? styles.selectionButtonVertical : styles.selectionButton} value={state.instrument} id="instrumentsList" onChange={(e) => { pickInstrument(e.target.value) }}>
-          {
-            /*instruments.map((option) => (
-              <option key={option.value} value={option.value}>{option.label}</option>
-            ))*/
-            state.instrumentsItemsList
-          }
-        </select>
-        <span style={isVertical ? styles.textVertical : styles.text}> Range: </span>
-        <select style={isVertical ? styles.selectionButtonVertical : styles.selectionButton} value={state.lowerNoteAndPitch} id="notesList" onChange={(e) => { onLowerNoteAndPitchChange(e) }}>
-          {
-            octavesDictionary.map((pitch, pitchIndex) => (
-              notes.filter(function(item, index) {
-                if ((pitchIndex!==0 || item==='A' || item==='Bb' || item==='B') &&
-                (fullPiano.indexOf(item+pitchIndex) < fullPiano.indexOf(state.higherNoteAndPitch))) { return true }
-                else { return false }
-              }).map((note) => (
-                <option key={note+pitchIndex} value={note+pitchIndex}>{notesDictionary[note][notesNaming]+pitch}</option>
-              ))
+      <span style={isVertical ? styles.textVertical : styles.text}> - </span>
+      <select style={isVertical ? styles.selectionButtonVertical : styles.selectionButton} value={state.higherNoteAndPitch} id="notesList" onChange={(e) => { onHigherNoteAndPitchChange(e) }}>
+        {
+          octavesDictionary.map((pitch, pitchIndex) => (
+            notes.filter(function(item, index) {
+              if ((pitchIndex!==0 || item==='A' || item==='Bb' || item==='B') &&
+              (fullPiano.indexOf(item+pitchIndex) > fullPiano.indexOf(state.lowerNoteAndPitch))) { return true }
+              else { return false }
+            }).map((note) => (
+              <option key={note+pitchIndex} value={note+pitchIndex}>{notesDictionary[note][state.notesNaming]+pitch}</option>
             ))
-          }
-        </select>
-        <span style={isVertical ? styles.textVertical : styles.text}> - </span>
-        <select style={isVertical ? styles.selectionButtonVertical : styles.selectionButton} value={state.higherNoteAndPitch} id="notesList" onChange={(e) => { onHigherNoteAndPitchChange(e) }}>
-          {
-            octavesDictionary.map((pitch, pitchIndex) => (
-              notes.filter(function(item, index) {
-                if ((pitchIndex!==0 || item==='A' || item==='Bb' || item==='B') &&
-                (fullPiano.indexOf(item+pitchIndex) > fullPiano.indexOf(state.lowerNoteAndPitch))) { return true }
-                else { return false }
-              }).map((note) => (
-                <option key={note+pitchIndex} value={note+pitchIndex}>{notesDictionary[note][notesNaming]+pitch}</option>
-              ))
-            ))
-          }
-        </select>
-      </div>
+          ))
+        }
+      </select>
 
       {/* Random notes buttons */}
       {
@@ -178,7 +154,7 @@ export const Controls = (props) => {
             state.riddle.length === 1 ?
               <div onClick={() => { props.setmidiNotePlaying(state.riddle) }} style={isVertical ? styles.noteTextVertical : styles.noteText}>
                 <span style={state.manualFinding ? styles.manuallyFoundStyle : styles.answerStyle}>
-                  {notesDictionary[state.riddle[0].slice(0, -1)][notesNaming]+octavesDictionary[state.riddle[0][state.riddle[0].length-1]]}
+                  {notesDictionary[state.riddle[0].slice(0, -1)][state.notesNaming]+octavesDictionary[state.riddle[0][state.riddle[0].length-1]]}
                   &nbsp;🔁
                 </span>
               </div>
@@ -186,11 +162,11 @@ export const Controls = (props) => {
                 state.riddle.length > 1 && state.riddle.length < 3 ?
                   <div onClick={() => { props.setmidiNotePlaying(state.riddle) }} style={isVertical ? styles.noteTextVertical : styles.noteText}>
                     <span style={styles.clueStyle}>
-                      {notesDictionary[state.riddle[0].slice(0, -1)][notesNaming]+octavesDictionary[state.riddle[0][state.riddle[0].length-1]]}
+                      {notesDictionary[state.riddle[0].slice(0, -1)][state.notesNaming]+octavesDictionary[state.riddle[0][state.riddle[0].length-1]]}
                     </span>
                     {' - '}
                     <span style={state.manualFinding ? styles.manuallyFoundStyle : styles.answerStyle}>
-                      {notesDictionary[state.riddle[1].slice(0, -1)][notesNaming]+octavesDictionary[state.riddle[1][state.riddle[1].length-1]]}
+                      {notesDictionary[state.riddle[1].slice(0, -1)][state.notesNaming]+octavesDictionary[state.riddle[1][state.riddle[1].length-1]]}
                     </span>
                     &nbsp;🔁
                   </div>
@@ -208,7 +184,7 @@ export const Controls = (props) => {
               </div>
               : state.riddle.length > 1 && state.riddle.length < 3 ?
                 <div style={isVertical ? styles.noteTextVertical : styles.noteText} onClick={() => { props.setmidiNotePlaying(state.riddle) }}>
-                  <span style={styles.clueStyle}>{notesDictionary[state.riddle[0].slice(0, -1)][notesNaming]+octavesDictionary[state.riddle[0][state.riddle[0].length-1]]}</span> - ? 🔁
+                  <span style={styles.clueStyle}>{notesDictionary[state.riddle[0].slice(0, -1)][state.notesNaming]+octavesDictionary[state.riddle[0][state.riddle[0].length-1]]}</span> - ? 🔁
                 </div>
                 :
                   state.riddle.length >= 3 &&
