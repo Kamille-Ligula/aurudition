@@ -74,7 +74,7 @@ export const Infos = (props) => {
       major 7th, dominant 7th, minor 7th, and major 9th to the list. The remaining six (half diminished,
       fully diminished, major 11th, major ♯11th, suspended 2, suspended 4) being there for true fearless Spartans.
 
-      <p style={{textAlign: 'center'}}>Aurudition © Samuel LUC, 2022 - <a target="_blank" href='https://github.com/Kamille-Ligula/aurudition'>https://github.com/Kamille-Ligula/aurudition</a></p>
+      <p style={{textAlign: 'center'}}>Aurudition © Samuel LUC, 2023 - <a target="_blank" href='https://github.com/Kamille-Ligula/aurudition'>https://github.com/Kamille-Ligula/aurudition</a></p>
     </div>
   )
 }
