@@ -15,6 +15,16 @@ export const styles = {
     padding: '3%',
     fontSize: '66px',
   },
+  settingsButton: {
+    marginTop: '1%',
+    minWidth: '5%',
+    minHeight: '20px',
+  },
+  settingsButtonVertical: {
+    marginTop: '1%',
+    padding: '1%',
+    fontSize: '30px',
+  },
   infoTitle: {
     fontSize: '25px',
     fontWeight: 'bold',

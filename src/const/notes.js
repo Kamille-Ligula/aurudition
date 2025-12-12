@@ -18,23 +18,23 @@ export const converter = {
 };
 
 export const notesDictionary = {
-  A: ['A', 'A', 'la'],
-  B: ['B', 'H', 'si'],
-  C: ['C', 'C', 'do'],
-  D: ['D', 'D', 're'],
-  E: ['E', 'E', 'mi'],
-  F: ['F', 'F', 'fa'],
-  G: ['G', 'G', 'sol'],
+  A: ['A', 'A', 'la', '6'],
+  B: ['B', 'H', 'si', '7'],
+  C: ['C', 'C', 'do', '1'],
+  D: ['D', 'D', 're', '2'],
+  E: ['E', 'E', 'mi', '3'],
+  F: ['F', 'F', 'fa', '4'],
+  G: ['G', 'G', 'sol', '5'],
   /*Ab: ['A♭', 'A♭', 'la♭'],
   Bb: ['B♭', 'H♭', 'si♭'],
   Db: ['D♭', 'D♭', 're♭'],
   Eb: ['E♭', 'E♭', 'mi♭'],
   Gb: ['G♭', 'G♭', 'sol♭'],*/
-  Ab: ['G♯/A♭', 'G♯/A♭', 'sol♯/la♭'],
-  Bb: ['A♯/B♭', 'A♯/H♭', 'la♯/si♭'],
-  Db: ['C♯/D♭', 'C♯/D♭', 'do♯/re♭'],
-  Eb: ['D♯/E♭', 'D♯/E♭', 're♯/mi♭'],
-  Gb: ['F♯/G♭', 'F♯/G♭', 'fa♯/sol♭'],
+  Ab: ['G♯/A♭', 'G♯/A♭', 'sol♯/la♭', '5♯/6♭'],
+  Bb: ['A♯/B♭', 'A♯/B', 'la♯/si♭', '6♯/7♭'],
+  Db: ['C♯/D♭', 'C♯/D♭', 'do♯/re♭', '1♯/2♭'],
+  Eb: ['D♯/E♭', 'D♯/E♭', 're♯/mi♭', '2♯/3♭'],
+  Gb: ['F♯/G♭', 'F♯/G♭', 'fa♯/sol♭', '4♯/5♭'],
 };
 
 export const octavesDictionary = [

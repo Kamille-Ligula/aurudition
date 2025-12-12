@@ -61,7 +61,7 @@ export const Infos = (props) => {
       <p/>
       <span style={styles.infoTitle}>Settings:</span>
       <p/><span style={styles.infoTitle2}>Instruments:</span>
-      <br/>Above a thousand types of instrument sounds can be chosen thanks to the <a target="_blank" href='https://www.npmjs.com/package/webaudiofont'>WebAudioFont MIDI library</a>.
+      <br/>Above a thousand types of instrument sounds can be chosen thanks to the <a target="_blank" rel="noreferrer" href='https://www.npmjs.com/package/webaudiofont'>WebAudioFont MIDI library</a>.
       <p/><span style={styles.infoTitle2}>Color right and wrong answers:</span>
       <br/>A setting that allows the algorithm to indicate whether the keys you tried to click
       do not correspond to the note(s) you are looking for, in which case they will be colored red, or whether
@@ -74,7 +74,7 @@ export const Infos = (props) => {
       major 7th, dominant 7th, minor 7th, and major 9th to the list. The remaining six (half diminished,
       fully diminished, major 11th, major ♯11th, suspended 2, suspended 4) being there for true fearless Spartans.
 
-      <p style={{textAlign: 'center'}}>Aurudition © Samuel LUC, 2023 - <a target="_blank" href='https://github.com/Kamille-Ligula/aurudition'>https://github.com/Kamille-Ligula/aurudition</a></p>
+      <p style={{textAlign: 'center'}}>Aurudition © Samuel LUC, {new Date().getYear()+1900} - <a target="_blank" rel="noreferrer" href='https://github.com/Kamille-Ligula/aurudition'>https://github.com/Kamille-Ligula/aurudition</a></p>
     </div>
   )
 }

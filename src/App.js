@@ -114,8 +114,8 @@ export default function App() {
     setwhiteHeight(window.innerHeight/4);
   }
 
-  let isVertical: boolean = (windowWidth/windowHeight < 1);
-  let isMobile: boolean = (windowWidth <= 1000);
+  let isVertical = (windowWidth/windowHeight < 1);
+  let isMobile = (windowWidth <= 1000);
 
   return (
     <div className='noselect'>
